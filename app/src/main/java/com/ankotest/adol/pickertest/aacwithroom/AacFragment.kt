@@ -84,7 +84,7 @@ class AccFragment : Fragment() {
     }
 
     private fun setCheck(data: SignUpTable) {
-        "Check".pln()
+//        "Check".pln()
         checkbg.visibility = View.VISIBLE
         checkItem.visibility = View.VISIBLE
         checkItem.adapter = CheckAdapter(data, ::removeItemRec)
@@ -121,7 +121,7 @@ class AccFragment : Fragment() {
                     setBackgroundColor(Color.parseColor("#ffffffff"))
                     layoutManager = LinearLayoutManager(act)
                     visibility = View.INVISIBLE
-                }.lparams(width = DeviceInfo.data.mW, height = DeviceInfo.data.mH * 4/ 5){
+                }.lparams(width = DeviceInfo.data.mW, height = DeviceInfo.data.mH * 4 / 5) {
                     topMargin = 90
                 }
 
@@ -202,11 +202,7 @@ class CheckAdapter(private var data: SignUpTable, private var callBack: (D: Int)
 //            0 -> return ViewHolder(Hd(parent.context))
             itemCount - 1 -> return ViewHolder(endOB(tempAnko))
         }
-//        when (keys[viewType-1].indexOf("餐")) {
-//            -1 -> return ViewHolder(bady2(tempAnko))
-//            else ->
-                return ViewHolder(bady2(tempAnko))
-//        }
+        return ViewHolder(bady2(tempAnko))
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

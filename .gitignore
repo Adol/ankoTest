@@ -7,3 +7,6 @@
 /build
 /captures
 .externalNativeBuild
+/build.gradle
+app/libs/
+app/src/main/java/com/ankotest/adol/pickertest/viewpage/
