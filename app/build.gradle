@@ -1,0 +1,116 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.ankotest.adol.pickertest"
+        minSdkVersion 17
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        encoding "UTF-8"
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+    }
+    kotlin {
+        experimental {
+            coroutines 'enable'
+        }
+    }
+    kapt {
+        generateStubs = true
+        javacOptions {
+            option("-Xmaxerrs", 500)
+        }
+    }
+
+}
+
+dependencies {
+    kapt "android.arch.persistence.room:compiler:1.0.0"
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support:design:27.1.1'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+//    guava
+    implementation 'com.google.guava:guava:23.3-android'
+//    implementation "android.arch.persistence.room:guava:1.1.0-beta2"
+    // ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+    // Room (use 1.1.0-beta2 for latest beta)
+    implementation "android.arch.persistence.room:runtime:1.0.0"
+    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    // Paging
+    implementation "android.arch.paging:runtime:1.0.0-beta1"
+    // Test helpers for LiveData
+    testImplementation "android.arch.core:core-testing:1.1.1"
+    // Test helpers for Room
+    testImplementation "android.arch.persistence.room:testing:1.0.0"
+//    androidTestImplementation "android.arch.persistence.room:testing:$rootProject.roomVersion"
+//    annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
+//  Gson
+    implementation 'com.google.code.gson:gson:2.8.2'
+//  RxAndroid
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+//    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+//  kotlin
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.31"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.5'
+//  Anko
+    implementation "org.jetbrains.anko:anko:$anko_version"
+    implementation "org.jetbrains.anko:anko-sdk25:$anko_version"
+    // sdk15, sdk19, sdk21, sdk23 are also available
+//  Anko Commons
+    implementation "org.jetbrains.anko:anko-commons:$anko_version"
+//    implementation "org.jetbrains.anko:anko-design:$anko_version" // For SnackBars
+//    implementation "org.jetbrains.anko:anko-design-coroutines:$anko_version"
+//  Anko Percent
+    implementation "org.jetbrains.anko:anko-percent:$anko_version"
+//  Anko Layouts
+//  anko-constraintlayout
+    implementation "org.jetbrains.anko:anko-constraint-layout:$anko_version"
+    implementation "com.android.support.constraint:constraint-layout:1.1.0"
+//  Anko Coroutine
+    implementation "org.jetbrains.anko:anko-coroutines:$anko_version"
+    implementation "org.jetbrains.anko:anko-sdk25-coroutines:$anko_version"
+    implementation "org.jetbrains.anko:anko-appcompat-v7-coroutines:$anko_version"
+//  Appcompat-v7 (only Anko Commons)
+    implementation "org.jetbrains.anko:anko-appcompat-v7-commons:$anko_version"
+
+    implementation "org.jetbrains.anko:anko-support-v4-commons:$anko_version"
+    implementation "org.jetbrains.anko:anko-support-v4:$anko_version"
+
+//     RecyclerView-v7
+    implementation "org.jetbrains.anko:anko-recyclerview-v7:$anko_version"
+    implementation "org.jetbrains.anko:anko-recyclerview-v7-coroutines:$anko_version"
+//    Anko SQLite
+//    implementation "org.jetbrains.anko:anko-sqlite:$anko_version"
+//    // CardView-v7
+//    compile "org.jetbrains.anko:anko-cardview-v7:$anko_version"
+
+//    // GridLayout-v7
+//    compile "org.jetbrains.anko:anko-gridlayout-v7:$anko_version"
+}
