@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ankotest.adol.pickertest
+package com.ankotest.adol.pickertest.picker_MVP
 
 interface BasePresenter {
 

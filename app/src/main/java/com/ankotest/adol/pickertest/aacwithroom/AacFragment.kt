@@ -16,8 +16,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.ankotest.adol.pickertest.R
-import com.ankotest.adol.pickertest.getViewModel
-import com.ankotest.adol.pickertest.pln
+import com.ankotest.adol.pickertest.ui.getViewModel
+import com.ankotest.adol.pickertest.ui.pln
 import com.ankotest.adol.pickertest.ui.DeviceInfo
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers

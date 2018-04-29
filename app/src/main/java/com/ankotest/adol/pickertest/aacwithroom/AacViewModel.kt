@@ -2,7 +2,7 @@ package com.ankotest.adol.pickertest.aacwithroom
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.ankotest.adol.pickertest.pln
+import com.ankotest.adol.pickertest.ui.pln
 import org.jetbrains.anko.coroutines.experimental.bg
 
 class AacViewModel : ViewModel() {

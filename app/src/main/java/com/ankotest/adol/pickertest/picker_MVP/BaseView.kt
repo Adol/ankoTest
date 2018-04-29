@@ -1,4 +1,4 @@
-package com.ankotest.adol.pickertest
+package com.ankotest.adol.pickertest.picker_MVP
 
 interface BaseView<T> {
 
