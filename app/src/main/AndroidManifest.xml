@@ -27,11 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".picker_MVP.PickerActivity" />-->
-         <!--<activity android:name=".aacwithroom.AacActivity" />-->
-        <!--<activity android:name=".recycler.RecyclerAct" />-->
-        <!--<activity android:name=".constraint.CActivity" />-->
-        <!--<activity android:name=".viewpage.ViewPageActivity" />-->
     </application>
 
 </manifest>
