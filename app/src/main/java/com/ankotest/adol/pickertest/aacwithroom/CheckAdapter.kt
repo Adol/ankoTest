@@ -1,10 +1,8 @@
 package com.ankotest.adol.pickertest.aacwithroom
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet.PARENT_ID
 import android.support.v7.widget.RecyclerView
-import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +11,7 @@ import com.ankotest.adol.pickertest.R
 import com.ankotest.adol.pickertest.ui.pln
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
+import org.jetbrains.anko.constraint.layout._ConstraintLayout
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -20,6 +19,7 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 class CheckAdapter(private var data: SignUpTable, private var callBack: (D: Int) -> Unit) : RecyclerView.Adapter<CheckAdapter.ViewHolder>() {
     private var keys: List<String> = listOf()
     private var values: List<Array<Int>> = listOf()
+    private var thisWidth: Int = 0
 
     init {
         data.userData.signUp.forEach {
@@ -28,44 +28,44 @@ class CheckAdapter(private var data: SignUpTable, private var callBack: (D: Int)
         }
     }
 
-    fun getAll() {
-        values.forEach {
-            it[1] = 8
-        }
+    private fun getAll() {
+//        values.forEach {
+//            //            it[1] = 8
+//        }
         data.userData.signUp.forEach {
             it.key.pln()
             it.value[1].pln()
         }
+        values = listOf()
         callBack(1)
     }
 
     //Override -----------------------
     override fun getItemCount(): Int {
-        return values.size + 2
+        if (values.isEmpty()) return 0 else return values.size + 2
     }
 
     override fun getItemViewType(position: Int): Int = position
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val tempAnko = AnkoContext.createReusable(parent.context, this)
+        thisWidth = parent.layoutParams.width
         when (viewType) {
             0 -> return ViewHolder(headOB(tempAnko))
-//            0 -> return ViewHolder(Hd(parent.context))
             itemCount - 1 -> return ViewHolder(endOB(tempAnko))
         }
-        return ViewHolder(bady2(tempAnko))
+        val v = Body1(parent.context)
+        return ViewHolder(v)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        position.pln()
         when (position) {
             0 -> holder.itemView.find<TextView>(TextID).text = getT(data.name.plus("  "), data.month.toString(), "月廣培報到")
-            itemCount - 1 -> "End".pln()
+            itemCount - 1 -> itemCount.pln()
             else -> {
-                "Else".pln()
-                holder.itemView.find<TextView>(TextID).text = keys[position - 1]
+                (holder.itemView as Body1).t1.text = keys[position - 1]
             }
         }
     }
@@ -75,7 +75,6 @@ class CheckAdapter(private var data: SignUpTable, private var callBack: (D: Int)
     }
 
     //View ---------------------
-
     private fun headOB(ui: AnkoContext<CheckAdapter>): View {
         return ui.apply {
             linearLayout {
@@ -89,50 +88,36 @@ class CheckAdapter(private var data: SignUpTable, private var callBack: (D: Int)
         }.view
     }
 
-    inner class Hd @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
+    //Anko 寫法
+    inner class Body1(ctx: Context) : _ConstraintLayout(ctx) {
         lateinit var t1: TextView
 
         init {
-            AnkoContext.createDelegate(this).let {
-                constraintLayout {
-                    //                    lparams(DeviceInfo.data.mW - 180)
-//                    gravity = Gravity.CENTER
-                    t1 = textView("Test") {
-                        gravity = Gravity.CENTER
-                        id = View.generateViewId()
-                        textSize = sp(12).toFloat()
-                    }
-                    applyConstraintSet {
-                        t1 {
-                            connect(
-                                    TOP to TOP of PARENT_ID,
-                                    START to START of PARENT_ID,
-                                    END to END of PARENT_ID
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun bady2(ui: AnkoContext<CheckAdapter>): View {
-        return ui.apply {
             constraintLayout {
-                lparams(matchParent)
-                val gap = imageView(R.drawable.ic_arrow_downward_black_24dp) {
-                    id = View.generateViewId()
-                    leftPadding = 90
-                    visibility = View.INVISIBLE
+                lparams(thisWidth)
+                onClick {
+                    //                    itemCount.pln()
                 }
-                val t1 = textView("body1") {
+
+                val gap = view {
+                    id = View.generateViewId()
+                    visibility = View.INVISIBLE
+                }.lparams(90, 1)
+
+                t1 = textView("body1") {
                     id = TextID
                     textSize = sp(9).toFloat()
                 }
-                val check = imageView(R.drawable.ic_check_circle_black_24dp) {
-                    id = View.generateViewId()
-                }.lparams(100, 100)
 
+                val check = imageView(R.drawable.mealbutton_2) {
+                    id = View.generateViewId()
+                }.lparams(dip(36), dip(36))
+                imageView(R.drawable.mealbutton_1) {
+                    id = View.generateViewId()
+                }.lparams(dip(36), dip(36))
+                imageView(R.drawable.mealbutton_3) {
+                    id = View.generateViewId()
+                }.lparams(dip(36), dip(36))
                 applyConstraintSet {
                     gap {
                         connect(
@@ -145,8 +130,9 @@ class CheckAdapter(private var data: SignUpTable, private var callBack: (D: Int)
                     check {
                         connect(
                                 TOP to TOP of PARENT_ID,
-//                                START to START of PARENT_ID,
-                                END to END of gap
+                                START to END of gap,
+//                                END to END of gap,
+                                BOTTOM to BOTTOM of PARENT_ID
                         )
                     }
                     t1 {
@@ -159,7 +145,7 @@ class CheckAdapter(private var data: SignUpTable, private var callBack: (D: Int)
                 }
 
             }
-        }.view
+        }
     }
 
     private fun endOB(ui: AnkoContext<CheckAdapter>): View {
@@ -167,7 +153,7 @@ class CheckAdapter(private var data: SignUpTable, private var callBack: (D: Int)
             linearLayout {
                 lparams(matchParent)
                 gravity = Gravity.CENTER
-//                topPadding = dip(30)
+
                 textView("確認") {
                     id = TextID
                     onClick {
@@ -194,3 +180,4 @@ class CheckAdapter(private var data: SignUpTable, private var callBack: (D: Int)
     }
 
 }
+

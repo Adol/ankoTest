@@ -48,7 +48,7 @@ class ShowAdapter(context: Context) : RecyclerView.Adapter<ShowAdapter.ViewHolde
 class SelectNameAdapterUI : AnkoComponent<ShowAdapter> {
     override fun createView(ui: AnkoContext<ShowAdapter>) = with(ui) {
         constraintLayout {
-            leftPadding = 30
+            leftPadding = 90
             val title = textView("Button") {
                 id = ShowAdapter.TextID
                 textSize = 24f
@@ -62,6 +62,7 @@ class SelectNameAdapterUI : AnkoComponent<ShowAdapter> {
                     connect(
                             TOP to TOP of PARENT_ID,
                             START to START of PARENT_ID
+//                            END to END of PARENT_ID
                     )
                 }
                 bgView {

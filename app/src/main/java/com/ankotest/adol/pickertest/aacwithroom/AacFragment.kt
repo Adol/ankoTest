@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.ankotest.adol.pickertest.ui.DeviceInfo
 import com.ankotest.adol.pickertest.ui.getViewModel
+import com.ankotest.adol.pickertest.ui.pln
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
@@ -19,6 +20,7 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
+import org.jetbrains.anko.constraint.layout.matchConstraint
 import org.jetbrains.anko.recyclerview.v7.coroutines.onChildAttachStateChangeListener
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -33,9 +35,9 @@ class AccFragment : Fragment() {
     private lateinit var checkbg: View
     private lateinit var checkItem: RecyclerView
     private lateinit var recAdapter: ShowAdapter
-//    private var selectNo: Int = 0
 
     private fun setShow() {
+
         with(showItme) {
             recAdapter = ShowAdapter(act)
             adapter = recAdapter
@@ -73,7 +75,7 @@ class AccFragment : Fragment() {
     }
 
     private fun removeItemRec(i: Int) {
-//        i.pln()
+        i.pln()
         checkbg.visibility = View.INVISIBLE
         checkItem.visibility = View.INVISIBLE
         checkItem.removeAllViews()
@@ -92,10 +94,11 @@ class AccFragment : Fragment() {
                     textSize = sp(14).toFloat()
                     gravity = Gravity.CENTER
                 }.lparams(matchParent, wrapContent)
+
                 showItme = recyclerView {
                     id = View.generateViewId()
                     layoutManager = LinearLayoutManager(act)
-                }.lparams(height = 0)
+                }.lparams(matchConstraint,matchConstraint)
 
                 checkbg = view {
                     id = View.generateViewId()
@@ -103,14 +106,13 @@ class AccFragment : Fragment() {
                     alpha = 0.7f
                     visibility = View.INVISIBLE
                 }.lparams(0, 0)
+
                 checkItem = recyclerView {
                     id = View.generateViewId()
                     setBackgroundColor(Color.parseColor("#ffffffff"))
                     layoutManager = LinearLayoutManager(act)
                     visibility = View.INVISIBLE
-                }.lparams(width = DeviceInfo.data.mW, height = DeviceInfo.data.mH * 4 / 5) {
-                    topMargin = 90
-                }
+                }.lparams(width = DeviceInfo.data.mW, height = DeviceInfo.data.mH * 4 / 5)
 
                 applyConstraintSet {
                     titleTV {
