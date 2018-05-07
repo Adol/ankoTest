@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.constraint.ConstraintSet.PARENT_ID
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -21,12 +21,10 @@ import org.jetbrains.anko.support.v4.viewPager
  **Created by adol on 2018/3/19.
  */
 class AacActivity : AppCompatActivity() {
-    lateinit var ui: AacUi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DeviceInfo.getInfo(this)
-        ui = AacUi(supportFragmentManager)
-        ui.setContentView(this)
+        AacUi(supportFragmentManager).setContentView(this)
     }
 }
 
@@ -59,7 +57,7 @@ class AacUi(fragmentManager: FragmentManager) : AnkoComponent<AacActivity> {
     }
 }
 
-class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class ViewpagerFm(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     private lateinit var tempFrag: AccFragment
 
     private val fragments = linkedMapOf<String, Fragment>()

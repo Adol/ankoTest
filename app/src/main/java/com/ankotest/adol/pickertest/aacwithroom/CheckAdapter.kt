@@ -109,13 +109,7 @@ class CheckAdapter(private var data: SignUpTable, private var callBack: (D: Int)
                     textSize = sp(9).toFloat()
                 }
 
-                val check = imageView(R.drawable.mealbutton_2) {
-                    id = View.generateViewId()
-                }.lparams(dip(36), dip(36))
-                imageView(R.drawable.mealbutton_1) {
-                    id = View.generateViewId()
-                }.lparams(dip(36), dip(36))
-                imageView(R.drawable.mealbutton_3) {
+                val check = imageView(R.drawable.mealbutton_3) {
                     id = View.generateViewId()
                 }.lparams(dip(36), dip(36))
                 applyConstraintSet {
