@@ -20,7 +20,7 @@ class AacViewModel : ViewModel() {
 //            db1.insert(getUser("AD1"))
 //            db1.insert(getUser("AD2"))
 //            db1.insert(getUser("AD3"))
-//            db1.insert(getUser("AD3"))
+//            db1.insert(getUser("AD4"))
 //            db1.insert(getUser("AD5"))
 //            db1.insert(getUser("AD6"))
 //            db1.insert(getUser("AD7"))
@@ -29,7 +29,7 @@ class AacViewModel : ViewModel() {
 //            db1.insert(getUser("AD10"))
 //            db1.insert(getUser("AD11"))
 //            db1.insert(getUser("AD12"))
-//            Flowable.just(db1.selectSignUp())
+            Flowable.just(db1.selectSignUp())
             Flowable.just(db1.selectSignUp())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -41,19 +41,4 @@ class AacViewModel : ViewModel() {
                     })
         }
     }
-
-//    private fun setappDB(i: Int) {
-//        thisdata.value?.get(i).pln()
-//        bg {
-//            db1.upDate(thisdata.value?.get(i))
-//        }
-//
-//    }
-
-//    fun V1(i: Int) {
-//        thisdata.value?.get(i).apply {
-//            this?.name = "TTTTT"
-//        }
-//        setappDB(i)
-//    }
 }

@@ -1,21 +1,27 @@
 package com.ankotest.adol.pickertest.aacwithroom
 
+import android.content.Context
 import android.os.Bundle
 import android.support.constraint.ConstraintSet.PARENT_ID
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.view.MotionEvent
 import android.view.View
 import com.ankotest.adol.pickertest.api.DeviceInfo
+import com.ankotest.adol.pickertest.api.EventVar
+import com.ankotest.adol.pickertest.api.viewClass
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
 import org.jetbrains.anko.setContentView
-import org.jetbrains.anko.support.v4.viewPager
+import org.jetbrains.anko.support.v4._ViewPager
 
 /**
  **Created by adol on 2018/3/19.
@@ -31,12 +37,15 @@ class AacActivity : AppCompatActivity() {
 class AacUi(fragmentManager: FragmentManager) : AnkoComponent<AacActivity> {
 
     private val viewpagerFm: ViewpagerFm = ViewpagerFm(fragmentManager)
-    private lateinit var myViewpager: ViewPager
+    private lateinit var myViewpager: ViewClass
 
     override fun createView(ui: AnkoContext<AacActivity>): View {
+        launch(UI) {
+            delay(100)
+        }
         return ui.apply {
             constraintLayout {
-                myViewpager = viewPager {
+                myViewpager = viewClass {
                     id = View.generateViewId()
                     adapter = viewpagerFm
                 }.lparams(0, 0)
@@ -51,15 +60,20 @@ class AacUi(fragmentManager: FragmentManager) : AnkoComponent<AacActivity> {
                         )
                     }
                 }
-
             }
         }.view
     }
 }
 
+class ViewClass(ctx: Context) : _ViewPager(ctx) {
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        return EventVar.fragmentTrans  //super.onInterceptTouchEvent(ev)
+    }
+}
+
 class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     private lateinit var tempFrag: AccFragment
-    private  var transFragment = false
+    private var transFragment = false
 
     private val fragments = linkedMapOf<String, Fragment>()
 

@@ -10,10 +10,11 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.ankotest.adol.pickertest.api.DeviceInfo
-import com.ankotest.adol.pickertest.api.ViewID.Companion.Aac
-import com.ankotest.adol.pickertest.api.ViewID.Companion.ID_Constraint
-import com.ankotest.adol.pickertest.api.ViewID.Companion.Recycler
-import com.ankotest.adol.pickertest.api.ViewID.Companion.picker
+import com.ankotest.adol.pickertest.api.EventVar.Companion.Aac
+import com.ankotest.adol.pickertest.api.EventVar.Companion.ID_Constraint
+import com.ankotest.adol.pickertest.api.EventVar.Companion.Recycler
+import com.ankotest.adol.pickertest.api.EventVar.Companion.picker
+import com.ankotest.adol.pickertest.api.pln
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
@@ -80,7 +81,7 @@ class ActivityUI : AnkoComponent<Context> {
 
 class ChangeAct(private var tempContext: AnkoContext<Context>) {
     fun goActivity(i: Int?) {
-
+        i.pln()
 //        when (i) {
 //            picker -> tempContext.startActivity<PickerActivity>()
 //            Aac -> tempContext.startActivity<AacActivity>()
