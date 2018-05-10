@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.support.constraint.ConstraintSet.PARENT_ID
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import com.ankotest.adol.pickertest.ui.DeviceInfo
+import com.ankotest.adol.pickertest.api.DeviceInfo
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
@@ -57,8 +57,9 @@ class AacUi(fragmentManager: FragmentManager) : AnkoComponent<AacActivity> {
     }
 }
 
-class ViewpagerFm(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     private lateinit var tempFrag: AccFragment
+    private  var transFragment = false
 
     private val fragments = linkedMapOf<String, Fragment>()
 
@@ -66,6 +67,7 @@ class ViewpagerFm(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         fragments["幹部"] = AccFragment()
         fragments["學員"] = AccFragment()
         fragments["統計"] = AccFragment()
+
     }
 
 //    override fun getItemPosition(ob: Any): Int {

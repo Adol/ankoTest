@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.ankotest.adol.pickertest.R
-import com.ankotest.adol.pickertest.ui.pln
+import com.ankotest.adol.pickertest.api.pln
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout._ConstraintLayout
@@ -78,12 +78,12 @@ class CheckAdapter(private var data: SignUpTable, private var callBack: (D: Int)
     private fun headOB(ui: AnkoContext<CheckAdapter>): View {
         return ui.apply {
             linearLayout {
-                lparams(matchParent)
+                lparams(matchParent,dip(55))
                 gravity = Gravity.CENTER
                 textView("Head") {
                     id = TextID
                     textSize = sp(9).toFloat()
-                }.lparams(wrapContent, wrapContent)
+                }.lparams(wrapContent)
             }
         }.view
     }
@@ -94,7 +94,7 @@ class CheckAdapter(private var data: SignUpTable, private var callBack: (D: Int)
 
         init {
             constraintLayout {
-                lparams(thisWidth)
+                lparams(thisWidth,dip(55))
                 onClick {
                     //                    itemCount.pln()
                 }
@@ -133,7 +133,8 @@ class CheckAdapter(private var data: SignUpTable, private var callBack: (D: Int)
                         connect(
                                 TOP to TOP of PARENT_ID,
                                 START to START of gap,
-                                END to END of PARENT_ID
+                                END to END of PARENT_ID,
+                                BOTTOM to BOTTOM of PARENT_ID
                         )
                     }
                 }
@@ -145,17 +146,22 @@ class CheckAdapter(private var data: SignUpTable, private var callBack: (D: Int)
     private fun endOB(ui: AnkoContext<CheckAdapter>): View {
         return ui.apply {
             linearLayout {
-                lparams(matchParent)
+                lparams(matchParent,dip(55))
                 gravity = Gravity.CENTER
 
                 textView("確認") {
                     id = TextID
+                    textSize = sp(9).toFloat()
                     onClick {
                         getAll()
                     }
                 }
-                textView(" / ")
-                textView("取消")
+                textView(" / "){
+                    textSize = sp(9).toFloat()
+                }
+                textView("取消"){
+                    textSize = sp(7).toFloat()
+                }
                 applyRecursively {
                     when (it) {
                         is TextView -> {

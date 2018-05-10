@@ -4,7 +4,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.support.v4.app.Fragment
-import com.ankotest.adol.pickertest.ui.pln
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -16,6 +15,21 @@ class AacViewModel : ViewModel() {
 
     fun getselectSignUp(owner:Fragment, Fun:(List<SignUpTable>) ->Unit){
         bg {
+//            db1.delall()
+//            db1.insert(getUser("AD"))
+//            db1.insert(getUser("AD1"))
+//            db1.insert(getUser("AD2"))
+//            db1.insert(getUser("AD3"))
+//            db1.insert(getUser("AD3"))
+//            db1.insert(getUser("AD5"))
+//            db1.insert(getUser("AD6"))
+//            db1.insert(getUser("AD7"))
+//            db1.insert(getUser("AD8"))
+//            db1.insert(getUser("AD9"))
+//            db1.insert(getUser("AD10"))
+//            db1.insert(getUser("AD11"))
+//            db1.insert(getUser("AD12"))
+//            Flowable.just(db1.selectSignUp())
             Flowable.just(db1.selectSignUp())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -28,18 +42,18 @@ class AacViewModel : ViewModel() {
         }
     }
 
-    private fun setappDB(i: Int) {
-        thisdata.value?.get(i).pln()
-        bg {
-            db1.upDate(thisdata.value?.get(i))
-        }
+//    private fun setappDB(i: Int) {
+//        thisdata.value?.get(i).pln()
+//        bg {
+//            db1.upDate(thisdata.value?.get(i))
+//        }
+//
+//    }
 
-    }
-
-    fun V1(i: Int) {
-        thisdata.value?.get(i).apply {
-            this?.name = "TTTTT"
-        }
-        setappDB(i)
-    }
+//    fun V1(i: Int) {
+//        thisdata.value?.get(i).apply {
+//            this?.name = "TTTTT"
+//        }
+//        setappDB(i)
+//    }
 }

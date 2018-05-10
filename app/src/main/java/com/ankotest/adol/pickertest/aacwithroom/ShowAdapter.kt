@@ -20,7 +20,6 @@ class ShowAdapter(context: Context) : RecyclerView.Adapter<ShowAdapter.ViewHolde
     }
 
     override fun getItemCount(): Int {
-//        items.size.pln()
         return items.size
     }
 
@@ -56,7 +55,7 @@ class SelectNameAdapterUI : AnkoComponent<ShowAdapter> {
             }.lparams(wrapContent, wrapContent)
             val bgView = view {
                 id = View.generateViewId()
-            }.lparams(matchParent, height = 150)
+            }.lparams(matchParent, height = dip(55))
             applyConstraintSet {
                 title {
                     connect(

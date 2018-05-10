@@ -12,7 +12,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.ankotest.adol.pickertest.R
-import com.ankotest.adol.pickertest.ui.DeviceInfo
+import com.ankotest.adol.pickertest.api.DeviceInfo
 import org.jetbrains.anko.*
 
 /**

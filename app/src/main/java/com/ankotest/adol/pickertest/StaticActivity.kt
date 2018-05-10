@@ -9,11 +9,11 @@ import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.TextView
-import com.ankotest.adol.pickertest.ui.DeviceInfo
-import com.ankotest.adol.pickertest.ui.ViewID.Companion.Aac
-import com.ankotest.adol.pickertest.ui.ViewID.Companion.ID_Constraint
-import com.ankotest.adol.pickertest.ui.ViewID.Companion.Recycler
-import com.ankotest.adol.pickertest.ui.ViewID.Companion.picker
+import com.ankotest.adol.pickertest.api.DeviceInfo
+import com.ankotest.adol.pickertest.api.ViewID.Companion.Aac
+import com.ankotest.adol.pickertest.api.ViewID.Companion.ID_Constraint
+import com.ankotest.adol.pickertest.api.ViewID.Companion.Recycler
+import com.ankotest.adol.pickertest.api.ViewID.Companion.picker
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 

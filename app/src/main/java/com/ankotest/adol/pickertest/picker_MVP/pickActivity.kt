@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import com.ankotest.adol.pickertest.ui.ViewID
+import com.ankotest.adol.pickertest.api.ViewID
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.setContentView

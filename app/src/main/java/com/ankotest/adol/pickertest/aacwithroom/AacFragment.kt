@@ -10,9 +10,12 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.ankotest.adol.pickertest.ui.DeviceInfo
-import com.ankotest.adol.pickertest.ui.getViewModel
-import com.ankotest.adol.pickertest.ui.pln
+import android.view.animation.DecelerateInterpolator
+import com.ankotest.adol.pickertest.api.DeviceInfo
+import com.ankotest.adol.pickertest.api.Easing
+import com.ankotest.adol.pickertest.api.getViewModel
+import com.ankotest.adol.pickertest.api.pln
+import com.github.florent37.kotlin.pleaseanimate.please
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
@@ -27,7 +30,7 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.act
 
-class AccFragment : Fragment() {
+class AccFragment: Fragment() {
     lateinit var title: String
 
     private lateinit var vm: AacViewModel
@@ -35,9 +38,9 @@ class AccFragment : Fragment() {
     private lateinit var checkbg: View
     private lateinit var checkItem: RecyclerView
     private lateinit var recAdapter: ShowAdapter
+//    var Bool= true
 
     private fun setShow() {
-
         with(showItme) {
             recAdapter = ShowAdapter(act)
             adapter = recAdapter
@@ -57,10 +60,10 @@ class AccFragment : Fragment() {
         }
     }
 
-    private  fun setVm() {
+    private fun setVm() {
         vm = getViewModel(this)
         vm.db1 = SignUpRepository(act)
-        vm.getselectSignUp(this,::setRecAdapter)
+        vm.getselectSignUp(this, ::setRecAdapter)
     }
 
     private fun setRecAdapter(data: List<SignUpTable>) {
@@ -68,17 +71,42 @@ class AccFragment : Fragment() {
     }
 
     private fun setCheck(data: SignUpTable) {
-//        "Check".pln()
-        checkbg.visibility = View.VISIBLE
-        checkItem.visibility = View.VISIBLE
-        checkItem.adapter = CheckAdapter(data, ::removeItemRec)
+        please {
+            animate(checkItem) toBe {
+                scale(1f, 0.3f)
+            }
+        }.now()
+
+        please(interpolator = Easing.Type(Easing.easeInOutSine)) {
+            animate(checkbg) toBe {
+                alpha(0.7f)
+            }
+            animate(checkItem) toBe {
+                alpha(1f)
+                textColor(Color.BLUE)
+                scale(1f, 1f)
+            }
+        }.start()
+        launch(UI) {
+            delay(100)
+            checkItem.adapter = CheckAdapter(data, ::removeItemRec)
+        }
     }
 
     private fun removeItemRec(i: Int) {
         i.pln()
-        checkbg.visibility = View.INVISIBLE
-        checkItem.visibility = View.INVISIBLE
-        checkItem.removeAllViews()
+        please(interpolator = DecelerateInterpolator()) {
+            animate(checkbg) toBe {
+                alpha(0f)
+                invisible()
+            }
+            animate(checkItem) toBe {
+                sameAlphaAs(checkbg)
+                scale(1f, 0.3f)
+                invisible()
+                checkItem.removeAllViews()
+            }
+        }.start()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -98,13 +126,13 @@ class AccFragment : Fragment() {
                 showItme = recyclerView {
                     id = View.generateViewId()
                     layoutManager = LinearLayoutManager(act)
-                }.lparams(matchConstraint,matchConstraint)
+                }.lparams(matchConstraint, matchConstraint)
 
                 checkbg = view {
                     id = View.generateViewId()
                     backgroundColor = Color.BLACK
-                    alpha = 0.7f
                     visibility = View.INVISIBLE
+                    alpha = 0f
                 }.lparams(0, 0)
 
                 checkItem = recyclerView {
@@ -112,7 +140,8 @@ class AccFragment : Fragment() {
                     setBackgroundColor(Color.parseColor("#ffffffff"))
                     layoutManager = LinearLayoutManager(act)
                     visibility = View.INVISIBLE
-                }.lparams(width = DeviceInfo.data.mW, height = DeviceInfo.data.mH * 4 / 5)
+                    alpha = 0f
+                }.lparams(DeviceInfo.data.mW, DeviceInfo.data.mH)
 
                 applyConstraintSet {
                     titleTV {
@@ -151,3 +180,4 @@ class AccFragment : Fragment() {
         }.view
     }
 }
+

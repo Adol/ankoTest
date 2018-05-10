@@ -104,6 +104,8 @@ dependencies {
 //     RecyclerView-v7
     implementation "org.jetbrains.anko:anko-recyclerview-v7:$anko_version"
     implementation "org.jetbrains.anko:anko-recyclerview-v7-coroutines:$anko_version"
+//  anmiation
+    implementation 'com.github.florent37:kotlinpleaseanimate:1.0.2'
 //    Anko SQLite
 //    implementation "org.jetbrains.anko:anko-sqlite:$anko_version"
 //    // CardView-v7

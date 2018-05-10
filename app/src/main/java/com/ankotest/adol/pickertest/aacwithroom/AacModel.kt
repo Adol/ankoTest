@@ -7,6 +7,11 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 data class SignUP(val signUp: MutableMap<String, Array<Int>>)
+/*Array [a,b,c]
+ a - 按鈕類型  0 用餐 1 上課
+ b - 確認
+ //c - 預先報名狀況暫停
+*/
 
 @Entity
 data class SignUpTable(@PrimaryKey(autoGenerate = true)
