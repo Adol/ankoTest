@@ -13,8 +13,8 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import com.ankotest.adol.pickertest.api.DeviceInfo
 import com.ankotest.adol.pickertest.api.Easing
+import com.ankotest.adol.pickertest.api.EventVar
 import com.ankotest.adol.pickertest.api.getViewModel
-import com.ankotest.adol.pickertest.api.pln
 import com.github.florent37.kotlin.pleaseanimate.please
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
@@ -51,8 +51,8 @@ class AccFragment: Fragment() {
                     //it -> view?
                     it?.onClick {
                         // getChildAdapterPosition(it) -> view的編號
-                        vm.thisdata.value?.get(getChildAdapterPosition(it)).let {
-                            it?.let(::setCheck)
+                        vm.thisdata.value?.get(getChildAdapterPosition(it)).also {
+                            it?.also(::setCheck)
                         }
                     }
                 }
@@ -71,6 +71,7 @@ class AccFragment: Fragment() {
     }
 
     private fun setCheck(data: SignUpTable) {
+        EventVar.fragmentTrans = false
         please {
             animate(checkItem) toBe {
                 scale(1f, 0.3f)
@@ -94,7 +95,9 @@ class AccFragment: Fragment() {
     }
 
     private fun removeItemRec(i: Int) {
-        i.pln()
+//        i.pln()
+//        vm.db1
+        EventVar.fragmentTrans = true
         please(interpolator = DecelerateInterpolator()) {
             animate(checkbg) toBe {
                 alpha(0f)

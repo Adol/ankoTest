@@ -13,5 +13,5 @@ class EventVar {
 //        const val ViewpageID = 6
 
         var fragmentTrans = true
-    }
+   }
 }

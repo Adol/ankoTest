@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import com.ankotest.adol.pickertest.R
 import com.ankotest.adol.pickertest.api.DeviceInfo
 import org.jetbrains.anko.*
 
@@ -30,7 +29,7 @@ class PickerActivityFragment : Fragment(), PickerConstract.View {
                 padding = 20
                 orientation = LinearLayout.VERTICAL
                 img = imageView {
-                    imageResource = R.drawable.bg_don
+//                    imageResource = R.drawable.bg_don
                     scaleType = ImageView.ScaleType.CENTER_CROP
                 }.lparams(width = DeviceInfo.data.mW, height = 300)
 

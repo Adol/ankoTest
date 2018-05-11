@@ -67,20 +67,22 @@ class AacUi(fragmentManager: FragmentManager) : AnkoComponent<AacActivity> {
 
 class ViewClass(ctx: Context) : _ViewPager(ctx) {
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-        return EventVar.fragmentTrans  //super.onInterceptTouchEvent(ev)
+//        EventVar.fragmentTrans.pln()
+        when (EventVar.fragmentTrans){
+            false -> return false
+        }
+        return super.onInterceptTouchEvent(ev)
     }
 }
 
 class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     private lateinit var tempFrag: AccFragment
-    private var transFragment = false
-
     private val fragments = linkedMapOf<String, Fragment>()
 
     init {
         fragments["幹部"] = AccFragment()
-        fragments["學員"] = AccFragment()
-        fragments["統計"] = AccFragment()
+//        fragments["學員"] = AccFragment()
+//        fragments["統計"] = AccFragment()
 
     }
 
