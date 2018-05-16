@@ -42,7 +42,7 @@ class AacActivity : AppCompatActivity() {
     private fun getJSON() {
         db = SignUpRepository(ctx)
         bg {
-            db.delall()
+            db.deleteAll()
             db.insert(getUser("AD", "幹部", "man"))
             db.insert(getUser("AD1", "幹部", "man"))
 //            db.insert(getUser("AD2", "幹部", "man"))
@@ -67,6 +67,7 @@ class AacUi(fragmentManager: FragmentManager) : AnkoComponent<AacActivity> {
     override fun createView(ui: AnkoContext<AacActivity>): View {
         launch(UI) {
             delay(100)
+            myViewpager.setPageTransformer(false, ::onTransform)
         }
         return ui.apply {
             constraintLayout {
@@ -99,7 +100,7 @@ class ViewClass(ctx: Context) : _ViewPager(ctx) {
     }
 }
 
-class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class ViewpagerFm(val fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     //    private lateinit var tempFrag: SignUpFragment
     private val fragments = linkedMapOf<String, Fragment>()
 
@@ -107,13 +108,13 @@ class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
         fragments["幹部"] = SignUpFragment()
         fragments["學員"] = SignUpFragment()
         fragments["統計"] = CountFragment()
-
     }
 
 //    override fun getItemPosition(ob: Any): Int {
+//        "getItemPosition".pln()
 //        when (ob){
-//            fm.fragments[0] ->return PagerAdapter.POSITION_NONE
-//            fm.fragments[1] ->return PagerAdapter.POSITION_NONE
+//            fm.fragments[2] ->return PagerAdapter.POSITION_NONE
+////            fm.fragments[1] ->return PagerAdapter.POSITION_NONE
 //        }
 //        return POSITION_UNCHANGED
 //    }
@@ -136,5 +137,9 @@ class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     }
 }
 
+fun onTransform(view: View, position: Float) {
+    view.scaleX = Math.max(0.9f, 1 - Math.abs(position))
+    view.scaleY = Math.max(0.9f, 1 - Math.abs(position))
+}
 
 

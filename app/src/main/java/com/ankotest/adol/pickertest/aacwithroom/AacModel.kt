@@ -54,11 +54,14 @@ class SignUpRepository(ctx: Context) {
 
     fun getSignUp(type: String): MutableLiveData<List<SignUpTable>> {
         val data = MutableLiveData<List<SignUpTable>>()
-        when (type) {
-            "All" -> data.postValue(mWordDao.getAll())
-            else -> data.postValue(mWordDao.getSignUp(type))
-        }
+        data.postValue(mWordDao.getSignUp(type))
         return data
+    }
+
+    fun getAll():List<SignUpTable>{
+//        gson.toJson(signUP)
+//       Gson().toJson(mWordDao.getAll()).pln()
+        return mWordDao.getAll()
     }
 
     fun insert(signUp: SignUpTable) {
@@ -69,7 +72,7 @@ class SignUpRepository(ctx: Context) {
         mWordDao.upDateSign(signUp)
     }
 
-    fun delall() {
+    fun deleteAll() {
         mWordDao.deleteAll()
     }
 }
