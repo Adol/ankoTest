@@ -11,7 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
-import com.ankotest.adol.pickertest.api.*
+import com.ankotest.adol.pickertest.api.DeviceInfo
+import com.ankotest.adol.pickertest.api.Easing
+import com.ankotest.adol.pickertest.api.EventVar
+import com.ankotest.adol.pickertest.api.getViewModel
 import com.github.florent37.kotlin.pleaseanimate.please
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
@@ -21,9 +24,7 @@ import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
 import org.jetbrains.anko.constraint.layout.matchConstraint
 import org.jetbrains.anko.matchParent
-import org.jetbrains.anko.recyclerview.v7.coroutines.onChildAttachStateChangeListener
 import org.jetbrains.anko.recyclerview.v7.recyclerView
-import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.sp
 import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.act
@@ -38,47 +39,24 @@ class CountFragment : Fragment() {
 //    lateinit var dbName: String
     //    private lateinit var checkbg: View
     private lateinit var checkItem: RecyclerView
-    private lateinit var recAdapter: ShowAdapter
+    private lateinit var recAdapter: SelectSignUPAd
 //    var Bool= true
 
     private fun setShow() {
-        with(showItme) {
-            recAdapter = ShowAdapter(act)
-            adapter = recAdapter
-            //adapter 加入 recAdapter
-            onChildAttachStateChangeListener {
-                //顯示到視窗時
-                onChildViewAttachedToWindow {
-                    //it -> view?
-                    it!!.onClick {
-                        // getChildAdapterPosition(it) -> view的編號
-                        vm.thisdata.value!![(getChildAdapterPosition(it))].also {
-                            it.also(::setCheck)
-                        }
-                    }
-                }
-            }
-        }
     }
 
 
     private fun setVm() {
         //VM取得db資料
         vm = getViewModel(this)
-//        dbName.pln()
-        when (title) {
-            "幹部" -> {
-                vm.db1 = SignUpRepository(act)
-                vm.getSignUp(this, ::setRecAdapter)
-            }
-        }
+        vm.getAll(this,  {
+//            val recAdapter = SelectSignUPAd(act)
+//            showItme.adapter =recAdapter
+//            recAdapter.setIt(it)
+        })
     }
 
-    private fun setRecAdapter(data: List<SignUpTable>) {
-        recAdapter.setIt(data)
-    }
-
-    private fun setCheck(data: SignUpTable) {
+    private fun setCheck() {
         EventVar.fragmentTrans = false
         please {
             animate(checkItem) toBe {
@@ -98,12 +76,12 @@ class CountFragment : Fragment() {
         }.start()
         launch(UI) {
             delay(100)
-            checkItem.adapter = CheckAdapter(data, ::removeItemRec)
+//            checkItem.adapter = ClickButtonUI(data, ::removeItemRec)
         }
     }
 
-    private fun removeItemRec(i: Int) {
-        i.pln()//回傳值
+    private fun removeItemRec() {
+//        i.pln()//回傳值
         EventVar.fragmentTrans = true
         please(interpolator = DecelerateInterpolator()) {
             //            animate(checkbg) toBe {
@@ -123,8 +101,8 @@ class CountFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         launch(UI) {
             delay(200)
-            setShow()
-            setVm()
+//            setShow()
+//            setVm()
         }
         return UI {
             constraintLayout {

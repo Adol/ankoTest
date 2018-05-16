@@ -11,7 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
-import com.ankotest.adol.pickertest.api.*
+import com.ankotest.adol.pickertest.api.DeviceInfo
+import com.ankotest.adol.pickertest.api.Easing
+import com.ankotest.adol.pickertest.api.getViewModel
 import com.github.florent37.kotlin.pleaseanimate.please
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
@@ -32,56 +34,43 @@ import org.jetbrains.anko.wrapContent
 
 class SignUpFragment : Fragment() {
     lateinit var title: String
-
     private lateinit var vm: AacViewModel
     private lateinit var showItme: RecyclerView
-//    lateinit var dbName: String
-    //    private lateinit var checkbg: View
-    private lateinit var checkItem: RecyclerView
-    private lateinit var recAdapter: ShowAdapter
-//    var Bool= true
+    private var ItemNo = 0
+
+    private lateinit var detailItem: RecyclerView
+
+    private fun setVm() {
+        //VM取得db資料
+        vm = getViewModel(this)
+        vm.getSignUp(this, title, {
+            val recAdapter = SelectSignUPAd(act)
+            showItme.adapter =recAdapter
+            recAdapter.setIt(it)
+//            showItme.adapter .setIt(it)
+        })
+    }
 
     private fun setShow() {
-        with(showItme) {
-            recAdapter = ShowAdapter(act)
-            adapter = recAdapter
-            //adapter 加入 recAdapter
+        showItme.apply{
+            //adapter 加入畫面時
             onChildAttachStateChangeListener {
                 //顯示到視窗時
-                onChildViewAttachedToWindow {
-                    //it -> view?
+                onChildViewAttachedToWindow{
+                    //it -> view? ->!!.
                     it!!.onClick {
+                        ItemNo = getChildAdapterPosition(it)
                         // getChildAdapterPosition(it) -> view的編號
-                        vm.thisdata.value!![(getChildAdapterPosition(it))].also {
-                            it.also(::setCheck)
-                        }
+                        vm.setClick(ItemNo,::showSelectUI)
                     }
                 }
             }
         }
     }
 
-
-    private fun setVm() {
-        //VM取得db資料
-        vm = getViewModel(this)
-//        dbName.pln()
-        when (title) {
-            "幹部" -> {
-                vm.db1 = SignUpRepository(act)
-                vm.getSignUp(this, ::setRecAdapter)
-            }
-        }
-    }
-
-    private fun setRecAdapter(data: List<SignUpTable>) {
-        recAdapter.setIt(data)
-    }
-
-    private fun setCheck(data: SignUpTable) {
-        EventVar.fragmentTrans = false
+    private fun showSelectUI(data: SignUpTable) {
         please {
-            animate(checkItem) toBe {
+            animate(detailItem) toBe {
                 scale(1f, 0.3f)
             }
         }.now()
@@ -90,7 +79,7 @@ class SignUpFragment : Fragment() {
             //            animate(checkbg) toBe {
 //                alpha(0.7f)
 //            }
-            animate(checkItem) toBe {
+            animate(detailItem) toBe {
                 alpha(1f)
                 textColor(Color.BLUE)
                 scale(1f, 1f)
@@ -98,24 +87,23 @@ class SignUpFragment : Fragment() {
         }.start()
         launch(UI) {
             delay(100)
-            checkItem.adapter = CheckAdapter(data, ::removeItemRec)
+            detailItem.adapter = ClickButtonUI(data, ::removeUI)
         }
     }
 
-    private fun removeItemRec(i: Int) {
-        i.pln()//回傳值
-        EventVar.fragmentTrans = true
+    private fun removeUI() {
+        vm.upDate(ItemNo)
         please(interpolator = DecelerateInterpolator()) {
             //            animate(checkbg) toBe {
 //                alpha(0f)
 //                invisible()
 //            }
-            animate(checkItem) toBe {
+            animate(detailItem) toBe {
                 //                sameAlphaAs(checkbg)
                 alpha(0f)
                 scale(1f, 0.3f)
                 invisible()
-                checkItem.removeAllViews()
+                detailItem.removeAllViews()
             }
         }.start()
     }
@@ -123,8 +111,8 @@ class SignUpFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         launch(UI) {
             delay(200)
-            setShow()
             setVm()
+            setShow()
         }
         return UI {
             constraintLayout {
@@ -146,7 +134,7 @@ class SignUpFragment : Fragment() {
 //                    alpha = 0f
 //                }.lparams(0, 0)
 
-                checkItem = recyclerView {
+                detailItem = recyclerView {
                     id = View.generateViewId()
                     setBackgroundColor(Color.parseColor("#ffffffff"))
                     layoutManager = LinearLayoutManager(act)
@@ -178,7 +166,7 @@ class SignUpFragment : Fragment() {
 //                                BOTTOM to BOTTOM of PARENT_ID
 //                        )
 //                    }
-                    checkItem {
+                    detailItem {
                         connect(
                                 TOP to TOP of PARENT_ID,
                                 START to START of PARENT_ID,

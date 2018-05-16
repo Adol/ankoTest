@@ -3,6 +3,7 @@ package com.ankotest.adol.pickertest.aacwithroom
 import android.arch.lifecycle.MutableLiveData
 import android.arch.persistence.room.*
 import android.content.Context
+import com.ankotest.adol.pickertest.api.pln
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -35,8 +36,10 @@ interface SignUpDao {
     fun upDateSign(up: SignUpTable)
 
     @Query("select * from SignUpTable")
-    fun selectKotlin(): List<SignUpTable>
-//    fun selectKotlin(): MutableLiveData<List<SignUpTable>>
+    fun getAll(): List<SignUpTable>
+
+    @Query("select * from SignUpTable where Type = :stype")
+    fun getSignUp(stype:String): List<SignUpTable>
 
     @Query("DELETE FROM SignUpTable")
     fun deleteAll()
@@ -50,9 +53,15 @@ class SignUpRepository(ctx: Context) {
         mWordDao = db!!.signUpDao()
     }
 
-    fun selectSignUp(): MutableLiveData<List<SignUpTable>> {
+    fun getAll(): MutableLiveData<List<SignUpTable>> {
         val data = MutableLiveData<List<SignUpTable>>()
-        data.postValue(mWordDao.selectKotlin())
+        data.postValue(mWordDao.getAll())
+        return data
+    }
+
+    fun getSignUp(type: String): MutableLiveData<List<SignUpTable>> {
+        val data = MutableLiveData<List<SignUpTable>>()
+        data.postValue(mWordDao.getSignUp(type))
         return data
 //        return mWordDao.selectKotlin()
     }
@@ -61,8 +70,9 @@ class SignUpRepository(ctx: Context) {
         mWordDao.insertOne(signUp)
     }
 
-    fun upDate(signUp: SignUpTable?) {
-        if (signUp != null) mWordDao.upDateSign(signUp)
+    fun upDate(signUp: SignUpTable) {
+        signUp.pln()
+        mWordDao.upDateSign(signUp)
     }
 
     fun delall() {
@@ -108,7 +118,6 @@ abstract class AppDataBase : RoomDatabase() {
             return Room.databaseBuilder(context.applicationContext,
                     AppDataBase::class.java, "SignUp_database")
                     .build()
-
         }
     }
 }
