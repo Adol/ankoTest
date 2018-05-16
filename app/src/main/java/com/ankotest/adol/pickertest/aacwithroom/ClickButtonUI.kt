@@ -27,7 +27,7 @@ class ClickButtonUI(private var data: SignUpTable, private var callBack: () -> U
 
     init {
         var i = 0
-        data.userData.signUp.forEach {
+        data.userData.data.forEach {
             keys += listOf(it.key)
             values += listOf(it.value)
             oldStatus += arrayOf(values[i][1])
@@ -72,7 +72,7 @@ class ClickButtonUI(private var data: SignUpTable, private var callBack: () -> U
 
         thisWidth = parent.layoutParams.width
         //自訂View 建構方法
-        val v = Body1(parent.context)
+        val v = ButtonBody(parent.context)
         return ViewHolder(v)
     }
 
@@ -83,8 +83,8 @@ class ClickButtonUI(private var data: SignUpTable, private var callBack: () -> U
             0 -> holder.itemView.find<TextView>(TextID).text = getTitle(data.name.plus("  "), data.month.toString(), "月廣培報到")
             itemCount - 1 -> {
             }
-            else -> (holder.itemView as Body1).apply {
-                this.setItem(position - 1)
+            else -> (holder.itemView as ButtonBody).apply {
+                setItem(position - 1)
             }
         }
     }
@@ -108,25 +108,25 @@ class ClickButtonUI(private var data: SignUpTable, private var callBack: () -> U
     }
 
     //Anko 寫法
-    inner class Body1(ctx: Context) : _ConstraintLayout(ctx) {
+    inner class ButtonBody(ctx: Context) : _ConstraintLayout(ctx) {
         private lateinit var showText: TextView
-        private lateinit var showStuate: ImageView
+        private lateinit var showButton: ImageView
 
-        private var itemNo = 0
+        private var itemNum = 0
         private val type by lazy {
-            values[itemNo][0]
+            values[itemNum][0]
         }
 
         fun setItem(No: Int) {
-            itemNo = No
-            showText.text = keys[itemNo]
+            itemNum = No
+            showText.text = keys[itemNum]
             setImage()
         }
 
         private fun setImage() {
             when (type) {
-                0 -> showStuate.setImageResource(mealButton[values[itemNo][1]])
-                1 -> showStuate.setImageResource(studyButton[values[itemNo][1]])
+                0 -> showButton.setImageResource(mealButton[values[itemNum][1]])
+                1 -> showButton.setImageResource(studyButton[values[itemNum][1]])
             }
         }
 
@@ -134,9 +134,9 @@ class ClickButtonUI(private var data: SignUpTable, private var callBack: () -> U
             constraintLayout {
                 lparams(thisWidth, dip(55))
                 onClick {
-                    when (values[itemNo][1]) {
-                        2 -> values[itemNo][1] = 0
-                        0 -> values[itemNo][1] = 2
+                    when (values[itemNum][1]) {
+                        2 -> values[itemNum][1] = 0
+                        0 -> values[itemNum][1] = 2
                     }
                     setImage()
                 }
@@ -151,7 +151,7 @@ class ClickButtonUI(private var data: SignUpTable, private var callBack: () -> U
                     textSize = sp(9).toFloat()
                 }
 
-                showStuate = imageView {
+                showButton = imageView {
                     id = View.generateViewId()
                 }.lparams(dip(36), dip(36))
 
@@ -163,7 +163,7 @@ class ClickButtonUI(private var data: SignUpTable, private var callBack: () -> U
                                 START to START of PARENT_ID
                         )
                     }
-                    showStuate {
+                    showButton {
                         connect(
                                 TOP to TOP of PARENT_ID,
                                 START to END of gap,

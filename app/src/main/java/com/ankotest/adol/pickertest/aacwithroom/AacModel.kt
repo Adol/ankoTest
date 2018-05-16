@@ -3,11 +3,10 @@ package com.ankotest.adol.pickertest.aacwithroom
 import android.arch.lifecycle.MutableLiveData
 import android.arch.persistence.room.*
 import android.content.Context
-import com.ankotest.adol.pickertest.api.pln
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-data class SignUP(val signUp: MutableMap<String, Array<Int>>)
+data class SignUpData(val data: MutableMap<String, Array<Int>>)
 /*Array [a,b,c]
  a - 按鈕類型  0 用餐 1 上課
  b - 確認
@@ -21,7 +20,7 @@ data class SignUpTable(@PrimaryKey(autoGenerate = true)
                        @ColumnInfo(name = "Type") var Type: String,
                        @ColumnInfo(name = "sex") var sex: String,
                        @ColumnInfo(name = "name") var name: String,
-                       @ColumnInfo(name = "userData") var userData: SignUP
+                       @ColumnInfo(name = "userData") var userData: SignUpData
 )
 
 @Dao
@@ -39,7 +38,7 @@ interface SignUpDao {
     fun getAll(): List<SignUpTable>
 
     @Query("select * from SignUpTable where Type = :stype")
-    fun getSignUp(stype:String): List<SignUpTable>
+    fun getSignUp(stype: String): List<SignUpTable>
 
     @Query("DELETE FROM SignUpTable")
     fun deleteAll()
@@ -53,17 +52,13 @@ class SignUpRepository(ctx: Context) {
         mWordDao = db!!.signUpDao()
     }
 
-    fun getAll(): MutableLiveData<List<SignUpTable>> {
-        val data = MutableLiveData<List<SignUpTable>>()
-        data.postValue(mWordDao.getAll())
-        return data
-    }
-
     fun getSignUp(type: String): MutableLiveData<List<SignUpTable>> {
         val data = MutableLiveData<List<SignUpTable>>()
-        data.postValue(mWordDao.getSignUp(type))
+        when (type) {
+            "All" -> data.postValue(mWordDao.getAll())
+            else -> data.postValue(mWordDao.getSignUp(type))
+        }
         return data
-//        return mWordDao.selectKotlin()
     }
 
     fun insert(signUp: SignUpTable) {
@@ -71,7 +66,6 @@ class SignUpRepository(ctx: Context) {
     }
 
     fun upDate(signUp: SignUpTable) {
-        signUp.pln()
         mWordDao.upDateSign(signUp)
     }
 
@@ -82,16 +76,16 @@ class SignUpRepository(ctx: Context) {
 
 class DataConverter {
     private val gson = Gson()
-    private val type = object : TypeToken<SignUP>() {}.type
+    private val type = object : TypeToken<SignUpData>() {}.type
 
     @TypeConverter
-    fun toJson(signUP: SignUP): String {
+    fun toJson(signUP: SignUpData): String {
         return gson.toJson(signUP)
     }
 
     @TypeConverter
-    fun toList(ValuesString: String): SignUP {
-        return gson.fromJson<SignUP>(ValuesString, type)
+    fun toList(ValuesString: String): SignUpData {
+        return gson.fromJson<SignUpData>(ValuesString, type)
     }
 }
 

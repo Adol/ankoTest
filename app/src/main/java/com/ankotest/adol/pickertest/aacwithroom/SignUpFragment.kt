@@ -36,32 +36,31 @@ class SignUpFragment : Fragment() {
     lateinit var title: String
     private lateinit var vm: AacViewModel
     private lateinit var showItme: RecyclerView
-    private var ItemNo = 0
+    private var itemNum = 0
 
     private lateinit var detailItem: RecyclerView
 
     private fun setVm() {
         //VM取得db資料
         vm = getViewModel(this)
-        vm.getSignUp(this, title, {
-            val recAdapter = SelectSignUPAd(act)
-            showItme.adapter =recAdapter
-            recAdapter.setIt(it)
-//            showItme.adapter .setIt(it)
+        vm.getData(this, title, {
+            val selectItmeadapter = SelectSignUPAd(act)
+            showItme.adapter = selectItmeadapter
+            selectItmeadapter.setIt(it)
         })
     }
 
-    private fun setShow() {
-        showItme.apply{
+    private fun setItem() {
+        showItme.apply {
             //adapter 加入畫面時
             onChildAttachStateChangeListener {
                 //顯示到視窗時
-                onChildViewAttachedToWindow{
+                onChildViewAttachedToWindow {
                     //it -> view? ->!!.
                     it!!.onClick {
-                        ItemNo = getChildAdapterPosition(it)
+                        itemNum = getChildAdapterPosition(it)
                         // getChildAdapterPosition(it) -> view的編號
-                        vm.setClick(ItemNo,::showSelectUI)
+                        vm.setClick(itemNum, ::showSelectUI)
                     }
                 }
             }
@@ -92,7 +91,7 @@ class SignUpFragment : Fragment() {
     }
 
     private fun removeUI() {
-        vm.upDate(ItemNo)
+        vm.upDate(itemNum)
         please(interpolator = DecelerateInterpolator()) {
             //            animate(checkbg) toBe {
 //                alpha(0f)
@@ -112,7 +111,7 @@ class SignUpFragment : Fragment() {
         launch(UI) {
             delay(200)
             setVm()
-            setShow()
+            setItem()
         }
         return UI {
             constraintLayout {

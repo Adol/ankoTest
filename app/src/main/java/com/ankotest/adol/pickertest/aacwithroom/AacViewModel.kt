@@ -19,24 +19,9 @@ class AacViewModel : ViewModel() {
     private lateinit var owner: Fragment
     private lateinit var thisdata: MutableLiveData<List<SignUpTable>>
 
-    fun getAll(owner: Fragment, Fun: (List<SignUpTable>) -> Unit) {
+    fun getData(owner: Fragment, type: String, Fun: (List<SignUpTable>) -> Unit) {
         this.owner = owner
-        bg {
-            Flowable.just(db.getAll())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        thisdata = it
-                        thisdata.observe(owner, Observer {
-                            it!!.let(Fun)
-                            //it?.let { Fun(it) }
-                        })
-                    })
-        }
-    }
-
-    fun getSignUp(owner: Fragment, type: String, Fun: (List<SignUpTable>) -> Unit) {
-        this.owner = owner
+//        val dbFun = if (type == "All") db.getAll() else db.getData(type)
         bg {
             Flowable.just(db.getSignUp(type))
                     .subscribeOn(Schedulers.io())
@@ -44,7 +29,7 @@ class AacViewModel : ViewModel() {
                     .subscribe({
                         thisdata = it
                         thisdata.observe(owner, Observer {
-                            it!!.let(Fun)
+                            it!!.also(Fun)
                             //it?.let { Fun(it) }
                         })
                     })
