@@ -17,6 +17,8 @@ data class SignUP(val signUp: MutableMap<String, Array<Int>>)
 data class SignUpTable(@PrimaryKey(autoGenerate = true)
                        @ColumnInfo(name = "id") var id: Int = 0,
                        @ColumnInfo(name = "month") var month: Int,
+                       @ColumnInfo(name = "Type") var Type: String,
+                       @ColumnInfo(name = "sex") var sex: String,
                        @ColumnInfo(name = "name") var name: String,
                        @ColumnInfo(name = "userData") var userData: SignUP
 )
@@ -83,7 +85,7 @@ class DataConverter {
     }
 }
 
-@Database(entities = arrayOf(SignUpTable::class), version = 1)
+@Database(entities = arrayOf(SignUpTable::class), version = 2)
 @TypeConverters(DataConverter::class)//特定類型＿輸出輸入時自動轉換
 abstract class AppDataBase : RoomDatabase() {
     abstract fun signUpDao(): SignUpDao

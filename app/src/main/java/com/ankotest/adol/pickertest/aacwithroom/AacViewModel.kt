@@ -13,22 +13,16 @@ class AacViewModel : ViewModel() {
     lateinit var db1: SignUpRepository
     lateinit var thisdata: MutableLiveData<List<SignUpTable>>
 
-    fun getselectSignUp(owner:Fragment, Fun:(List<SignUpTable>) ->Unit){
+
+    fun getSignUp(owner:Fragment, Fun:(List<SignUpTable>) ->Unit){
         bg {
 //            db1.delall()
-//            db1.insert(getUser("AD"))
-//            db1.insert(getUser("AD1"))
-//            db1.insert(getUser("AD2"))
-//            db1.insert(getUser("AD3"))
-//            db1.insert(getUser("AD4"))
-//            db1.insert(getUser("AD5"))
-//            db1.insert(getUser("AD6"))
-//            db1.insert(getUser("AD7"))
-//            db1.insert(getUser("AD8"))
-//            db1.insert(getUser("AD9"))
-//            db1.insert(getUser("AD10"))
-//            db1.insert(getUser("AD11"))
-//            db1.insert(getUser("AD12"))
+//            db1.insert(getUser("AD","幹部","man"))
+//            db1.insert(getUser("AD1","幹部","man"))
+//            db1.insert(getUser("AD2","幹部","man"))
+//            db1.insert(getUser("ADA","幹部","woman"))
+//            db1.insert(getUser("ADA1","幹部","woman"))
+//            db1.insert(getUser("ADA2","幹部","woman"))
             Flowable.just(db1.selectSignUp())
             Flowable.just(db1.selectSignUp())
                     .subscribeOn(Schedulers.io())
@@ -36,7 +30,7 @@ class AacViewModel : ViewModel() {
                     .subscribe({
                         thisdata = it
                         thisdata.observe(owner, Observer {
-                            it?.let(Fun)// = it?.let { Fun(it) }
+                            it!!.let(Fun)// = it?.let { Fun(it) }
                         })
                     })
         }

@@ -11,31 +11,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
-import com.ankotest.adol.pickertest.api.DeviceInfo
-import com.ankotest.adol.pickertest.api.Easing
-import com.ankotest.adol.pickertest.api.EventVar
-import com.ankotest.adol.pickertest.api.getViewModel
+import com.ankotest.adol.pickertest.api.*
 import com.github.florent37.kotlin.pleaseanimate.please
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
-import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
 import org.jetbrains.anko.constraint.layout.matchConstraint
+import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.recyclerview.v7.coroutines.onChildAttachStateChangeListener
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.sp
 import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.act
+import org.jetbrains.anko.textView
+import org.jetbrains.anko.wrapContent
 
-class AccFragment: Fragment() {
+class CountFragment : Fragment() {
     lateinit var title: String
 
     private lateinit var vm: AacViewModel
     private lateinit var showItme: RecyclerView
-    private lateinit var checkbg: View
+//    lateinit var dbName: String
+    //    private lateinit var checkbg: View
     private lateinit var checkItem: RecyclerView
     private lateinit var recAdapter: ShowAdapter
 //    var Bool= true
@@ -49,10 +50,10 @@ class AccFragment: Fragment() {
                 //顯示到視窗時
                 onChildViewAttachedToWindow {
                     //it -> view?
-                    it?.onClick {
+                    it!!.onClick {
                         // getChildAdapterPosition(it) -> view的編號
-                        vm.thisdata.value?.get(getChildAdapterPosition(it)).also {
-                            it?.also(::setCheck)
+                        vm.thisdata.value!![(getChildAdapterPosition(it))].also {
+                            it.also(::setCheck)
                         }
                     }
                 }
@@ -60,10 +61,17 @@ class AccFragment: Fragment() {
         }
     }
 
+
     private fun setVm() {
+        //VM取得db資料
         vm = getViewModel(this)
-        vm.db1 = SignUpRepository(act)
-        vm.getselectSignUp(this, ::setRecAdapter)
+//        dbName.pln()
+        when (title) {
+            "幹部" -> {
+                vm.db1 = SignUpRepository(act)
+                vm.getSignUp(this, ::setRecAdapter)
+            }
+        }
     }
 
     private fun setRecAdapter(data: List<SignUpTable>) {
@@ -79,9 +87,9 @@ class AccFragment: Fragment() {
         }.now()
 
         please(interpolator = Easing.Type(Easing.easeInOutSine)) {
-            animate(checkbg) toBe {
-                alpha(0.7f)
-            }
+            //            animate(checkbg) toBe {
+//                alpha(0.7f)
+//            }
             animate(checkItem) toBe {
                 alpha(1f)
                 textColor(Color.BLUE)
@@ -95,16 +103,16 @@ class AccFragment: Fragment() {
     }
 
     private fun removeItemRec(i: Int) {
-//        i.pln()
-//        vm.db1
+        i.pln()//回傳值
         EventVar.fragmentTrans = true
         please(interpolator = DecelerateInterpolator()) {
-            animate(checkbg) toBe {
-                alpha(0f)
-                invisible()
-            }
+            //            animate(checkbg) toBe {
+//                alpha(0f)
+//                invisible()
+//            }
             animate(checkItem) toBe {
-                sameAlphaAs(checkbg)
+                //                sameAlphaAs(checkbg)
+                alpha(0f)
                 scale(1f, 0.3f)
                 invisible()
                 checkItem.removeAllViews()
@@ -114,7 +122,7 @@ class AccFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         launch(UI) {
-            delay(500)
+            delay(200)
             setShow()
             setVm()
         }
@@ -131,12 +139,12 @@ class AccFragment: Fragment() {
                     layoutManager = LinearLayoutManager(act)
                 }.lparams(matchConstraint, matchConstraint)
 
-                checkbg = view {
-                    id = View.generateViewId()
-                    backgroundColor = Color.BLACK
-                    visibility = View.INVISIBLE
-                    alpha = 0f
-                }.lparams(0, 0)
+//                checkbg = view {
+//                    id = View.generateViewId()
+//                    backgroundColor = Color.BLACK
+//                    visibility = View.INVISIBLE
+//                    alpha = 0f
+//                }.lparams(0, 0)
 
                 checkItem = recyclerView {
                     id = View.generateViewId()
@@ -162,14 +170,14 @@ class AccFragment: Fragment() {
                                 BOTTOM to BOTTOM of PARENT_ID
                         )
                     }
-                    checkbg {
-                        connect(
-                                TOP to TOP of PARENT_ID,
-                                START to START of PARENT_ID,
-                                END to END of PARENT_ID,
-                                BOTTOM to BOTTOM of PARENT_ID
-                        )
-                    }
+//                    checkbg {
+//                        connect(
+//                                TOP to TOP of PARENT_ID,
+//                                START to START of PARENT_ID,
+//                                END to END of PARENT_ID,
+//                                BOTTOM to BOTTOM of PARENT_ID
+//                        )
+//                    }
                     checkItem {
                         connect(
                                 TOP to TOP of PARENT_ID,
