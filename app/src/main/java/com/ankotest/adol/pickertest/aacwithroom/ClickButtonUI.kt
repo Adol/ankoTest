@@ -125,8 +125,8 @@ class ClickButtonUI(private var data: SignUpTable, private var callBack: () -> U
 
         private fun setImage() {
             when (type) {
-                0 -> showButton.setImageResource(mealButton[values[itemNum][1]])
-                1 -> showButton.setImageResource(studyButton[values[itemNum][1]])
+                0,1,2 -> showButton.setImageResource(mealButton[values[itemNum][1]])
+                3,4,5  -> showButton.setImageResource(studyButton[values[itemNum][1]])
             }
         }
 
@@ -221,4 +221,3 @@ class ClickButtonUI(private var data: SignUpTable, private var callBack: () -> U
         const val TextID = 0
     }
 }
-

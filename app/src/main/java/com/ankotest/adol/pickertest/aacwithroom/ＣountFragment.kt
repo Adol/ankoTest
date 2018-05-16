@@ -32,21 +32,28 @@ class CountFragment : Fragment() {
 
     }
 
-
+    private lateinit var totalDa:Array<Int>
     private fun setVm() {
         //VM取得db資料
         vm = getViewModel(this)
-        vm.getData(this,"All", {
+        vm.getData(this, "All", {
             "DB Change ".pln()
-//            it.count().pln()
+            totalDa = arrayOf(0,0,0,0,0,0)
             it.forEach {
                 it.userData.data.forEach {
-//                    it.value.
+
+//                    "${it.key}".pln()
+//                    it.value.forEach {
+//                        it.pln()
+//                    }
+                    when (it.value[1]) {
+                        2 -> totalDa[it.value[0]] ++
+                    }
                 }
             }
-            //            val recAdapter = SelectSignUPAd(act)
-//            showItme.adapter =recAdapter
-//            recAdapter.setIt(it)
+            totalDa.forEach {
+                it.pln()
+            }
         })
     }
 
