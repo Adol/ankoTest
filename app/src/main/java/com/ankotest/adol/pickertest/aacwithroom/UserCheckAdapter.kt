@@ -9,40 +9,59 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.ankotest.adol.pickertest.R
+import com.ankotest.adol.pickertest.api.EventVar
+import com.ankotest.adol.pickertest.api.pln
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout._ConstraintLayout
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
+import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class UserCheckAdapter(private var userInfo: List<String>, private var data: List<SignUpData>, private var callBack: () -> Unit) : RecyclerView.Adapter<UserCheckAdapter.ViewHolder>() {
     val mealButton = listOf(R.drawable.meal_button_1, R.drawable.meal_button_2, R.drawable.meal_button_3)
     val studyButton = listOf(R.drawable.study_button_1, R.drawable.study_button_2, R.drawable.study_button_3)
 
-    //    private var keys: List<String> = listOf()
-//    private var values: List<Array<Int>> = listOf()
+    private var itemSize: Int
+    //    private var hasChange :Boolean
+    //原本資料 -> 取消於回復原狀用
     private var oldStatus: Array<Int> = arrayOf()
-    private var itemSize = 0
 
     init {
-//        "data.userSignUp".pln()
+        "init".pln()
+        EventVar.hasChange = true
         itemSize = data.size
+        //取得原本資料
         data.forEach {
             oldStatus += arrayOf(it.signUp[1])
         }
     }
 
     // Button Event ------------
-    private fun cancle() {
-        for (i in oldStatus.indices) {
-            data[i].signUp[1] =oldStatus[i]
+    private fun cancel() {
+        bg {
+            EventVar.hasChange = false
+            for (i in oldStatus.indices) {
+                data[i].signUp[1] = oldStatus[i]
+            }
         }
-        chechOK()
+        goBack()
     }
 
-    private fun chechOK() {
+    private fun goBack() {
+        bg {
+            if (EventVar.hasChange) {
+                for (i in data.indices) {
+                    if (data[i].signUp[1] != oldStatus[i]) {
+                        data[i].title.pln()
+                    }
+                }
+            }
+        }
+        //清 物件
         itemSize = 0
+        //回傳
         callBack()
     }
 
@@ -188,7 +207,7 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
                     id = TextID
                     textSize = sp(9).toFloat()
                     onClick {
-                        chechOK()
+                        goBack()
                     }
                 }
                 textView(" / ") {
@@ -197,7 +216,7 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
                 textView("取消") {
                     textSize = sp(9).toFloat()
                     onClick {
-                        cancle()
+                        cancel()
                     }
                 }
                 applyRecursively {

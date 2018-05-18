@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import com.ankotest.adol.pickertest.api.DeviceInfo
 import com.ankotest.adol.pickertest.api.Easing
+import com.ankotest.adol.pickertest.api.EventVar
 import com.ankotest.adol.pickertest.api.getViewModel
 import com.github.florent37.kotlin.pleaseanimate.please
 import kotlinx.coroutines.experimental.android.UI
@@ -91,7 +92,7 @@ class SignUpFragment : Fragment() {
     }
 
     private fun removeUI() {
-        vm.upDate(itemNum)
+        if (EventVar.hasChange) vm.upDate(itemNum)
         please(interpolator = DecelerateInterpolator()) {
             //            animate(checkbg) toBe {
 //                alpha(0f)

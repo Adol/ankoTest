@@ -19,8 +19,6 @@ class AacViewModel : ViewModel() {
     private lateinit var owner: Fragment
     private lateinit var thisdata: MutableLiveData<List<SignUpTable>>
 
-//    private lateinit var totalDa: Array<Int>
-
     fun getData(owner: Fragment) :List<SignUpTable>{
         this.owner = owner
         return db.getAll()
