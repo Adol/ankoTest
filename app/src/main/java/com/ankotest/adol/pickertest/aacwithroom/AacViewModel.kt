@@ -28,7 +28,6 @@ class AacViewModel : ViewModel() {
 
     fun getData(owner: Fragment, type: String, Fun: (List<SignUpTable>) -> Unit) {
         this.owner = owner
-//        val dbFun = if (type == "All") db.getAll() else db.getData(type)
         bg {
             Flowable.just(db.getSignUp(type))
                     .subscribeOn(Schedulers.io())
