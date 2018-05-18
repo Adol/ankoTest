@@ -16,47 +16,42 @@ import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
-class UserSignUpCheckAdapter(private var data: SignUpTable, private var callBack: () -> Unit) : RecyclerView.Adapter<UserSignUpCheckAdapter.ViewHolder>() {
+class UserCheckAdapter(private var userInfo: List<String>, private var data: List<SignUpData>, private var callBack: () -> Unit) : RecyclerView.Adapter<UserCheckAdapter.ViewHolder>() {
     val mealButton = listOf(R.drawable.meal_button_1, R.drawable.meal_button_2, R.drawable.meal_button_3)
     val studyButton = listOf(R.drawable.study_button_1, R.drawable.study_button_2, R.drawable.study_button_3)
 
-    private var keys: List<String> = listOf()
-    private var values: List<Array<Int>> = listOf()
+    //    private var keys: List<String> = listOf()
+//    private var values: List<Array<Int>> = listOf()
     private var oldStatus: Array<Int> = arrayOf()
-
+    private var itemSize = 0
 
     init {
-        var i = 0
-        data.userData.data.forEach {
-            keys += listOf(it.key)
-            values += listOf(it.value)
-            oldStatus += arrayOf(values[i][1])
-            i++
+//        "data.userSignUp".pln()
+        itemSize = data.size
+        data.forEach {
+            oldStatus += arrayOf(it.signUp[1])
         }
     }
 
     // Button Event ------------
-    private fun chechOK() {
-        values = listOf()
-        callBack()
-    }
-
     private fun cancle() {
-        var i = 0
-//        oldStatus.size.pln()
-        oldStatus.forEach {
-            values[i][1] = it
-            i++
+        for (i in oldStatus.indices) {
+            data[i].signUp[1] =oldStatus[i]
         }
         chechOK()
     }
 
+    private fun chechOK() {
+        itemSize = 0
+        callBack()
+    }
+
     //Override -----------------------
     override fun getItemCount(): Int {
-        when (values.isEmpty()) {
-            true -> return 0
+        when (itemSize == 0) {
+            false -> itemSize + 2
         }
-        return values.size + 2
+        return itemSize
     }
 
     override fun getItemViewType(position: Int): Int = position
@@ -80,7 +75,7 @@ class UserSignUpCheckAdapter(private var data: SignUpTable, private var callBack
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (position) {
-            0 -> holder.itemView.find<TextView>(TextID).text = getTitle(data.name.plus("  "), data.month.toString(), "月廣培報到")
+            0 -> holder.itemView.find<TextView>(TextID).text = getTitle(userInfo[0].plus("  "), userInfo[1], "月廣培報到")
             itemCount - 1 -> {
             }
             else -> (holder.itemView as ButtonBody).apply {
@@ -94,7 +89,7 @@ class UserSignUpCheckAdapter(private var data: SignUpTable, private var callBack
     }
 
     //View ---------------------
-    private fun headOB(ui: AnkoContext<UserSignUpCheckAdapter>): View {
+    private fun headOB(ui: AnkoContext<UserCheckAdapter>): View {
         return ui.apply {
             linearLayout {
                 lparams(matchParent, dip(55))
@@ -114,19 +109,19 @@ class UserSignUpCheckAdapter(private var data: SignUpTable, private var callBack
 
         private var itemNum = 0
         private val type by lazy {
-            values[itemNum][0]
+            data[itemNum].signUp[0]
         }
 
         fun setItem(No: Int) {
             itemNum = No
-            showText.text = keys[itemNum]
-            setImage()
+            showText.text = data[itemNum].title//keys[itemNum]
+            setImage(type)
         }
 
-        private fun setImage() {
-            when (type) {
-                0,1,2 -> showButton.setImageResource(mealButton[values[itemNum][1]])
-                3,4,5  -> showButton.setImageResource(studyButton[values[itemNum][1]])
+        private fun setImage(I: Int) {
+            when (I) {
+                in 0..4 -> showButton.setImageResource(mealButton[data[itemNum].signUp[1]])
+                in 5..9 -> showButton.setImageResource(studyButton[data[itemNum].signUp[1]])
             }
         }
 
@@ -134,11 +129,11 @@ class UserSignUpCheckAdapter(private var data: SignUpTable, private var callBack
             constraintLayout {
                 lparams(thisWidth, dip(55))
                 onClick {
-                    when (values[itemNum][1]) {
-                        2 -> values[itemNum][1] = 0
-                        0 -> values[itemNum][1] = 2
+                    when (data[itemNum].signUp[1]) {
+                        2 -> data[itemNum].signUp[1] = 0
+                        0 -> data[itemNum].signUp[1] = 2
                     }
-                    setImage()
+                    setImage(type)
                 }
 
                 val gap = view {
@@ -183,7 +178,7 @@ class UserSignUpCheckAdapter(private var data: SignUpTable, private var callBack
         }
     }
 
-    private fun endOB(ui: AnkoContext<UserSignUpCheckAdapter>): View {
+    private fun endOB(ui: AnkoContext<UserCheckAdapter>): View {
         return ui.apply {
             linearLayout {
                 lparams(matchParent, dip(55))

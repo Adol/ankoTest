@@ -12,14 +12,14 @@ import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.support.v4.act
 
 class AacViewModel : ViewModel() {
-    val db by lazy {
+    private val db by lazy {
         SignUpRepository(owner.act)
     }
 
     private lateinit var owner: Fragment
     private lateinit var thisdata: MutableLiveData<List<SignUpTable>>
 
-    private lateinit var totalDa: Array<Int>
+//    private lateinit var totalDa: Array<Int>
 
     fun getData(owner: Fragment) :List<SignUpTable>{
         this.owner = owner

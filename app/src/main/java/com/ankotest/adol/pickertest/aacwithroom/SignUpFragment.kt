@@ -86,7 +86,7 @@ class SignUpFragment : Fragment() {
         }.start()
         launch(UI) {
             delay(100)
-            detailItem.adapter = UserSignUpCheckAdapter(data, ::removeUI)
+            detailItem.adapter = UserCheckAdapter(listOf(data.name,data.name),data.userData, ::removeUI)
         }
     }
 

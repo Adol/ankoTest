@@ -8,7 +8,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 
-data class SignUpData(val data: MutableMap<String, Array<Int>>)
+//data class SignUpData(val data:List<Data>){
+    data class SignUpData(val title: String, val signUp:MutableList<Int>)
+//}
 /*Array [a,b,c]
  a - 按鈕類型  0 用餐 1 上課
  b - 確認
@@ -19,11 +21,10 @@ data class SignUpData(val data: MutableMap<String, Array<Int>>)
 data class SignUpTable(@PrimaryKey(autoGenerate = true)
                        @ColumnInfo(name = "id") var id: Int = 0,
                        @ColumnInfo(name = "month") var month: Int,
-                       @ColumnInfo(name = "Type") var Type: String,
+                       @ColumnInfo(name = "title") var Type: String,
                        @ColumnInfo(name = "sex") var sex: String,
                        @ColumnInfo(name = "name") var name: String,
-                       @ColumnInfo(name = "userSignUp") var userSignUp: ArrayList<Any>,
-                       @ColumnInfo(name = "userData") var userData: SignUpData
+                       @ColumnInfo(name = "userData") var userData: List<SignUpData>
 )
 
 @Dao
@@ -40,7 +41,7 @@ interface SignUpDao {
     @Query("select * from SignUpTable")
     fun getAll(): List<SignUpTable>
 
-    @Query("select * from SignUpTable where Type = :stype")
+    @Query("select * from SignUpTable where title = :stype")
     fun getSignUp(stype: String): List<SignUpTable>
 
     @Query("DELETE FROM SignUpTable")
@@ -60,13 +61,13 @@ class SignUpRepository(ctx: Context) {
         type.pln()
         data.postValue(mWordDao.getSignUp(type))
         "getSignUp".pln()
-//        mWordDao.getSignUp(type).pln()
+//        mWordDao.getSignUp(title).pln()
         return data
     }
 
     fun getAll(): List<SignUpTable> {
 //        gson.toJson(signUP)
-//       Gson().toJson(mWordDao.getAll()).pln()
+       Gson().toJson(mWordDao.getAll()).pln()
         return mWordDao.getAll()
     }
 
@@ -87,29 +88,17 @@ class DataConverter {
     private val gson = Gson()
 
     @TypeConverter
-    fun toJson(signUP: SignUpData): String {
-        "toJson".pln()
+    fun toJson(signUP: List<SignUpData>): String {
+//        "toJson".pln()
 //        gson.toJson(signUP).pln()
         return gson.toJson(signUP)
     }
 
     @TypeConverter
-    fun toList(ValuesString: String): SignUpData {
-        "toList".pln()
-        val type = object : TypeToken<SignUpData>() {}.type
-        return gson.fromJson<SignUpData>(ValuesString, type)
-    }
-
-    @TypeConverter
-    fun arrayToJson(userSignUp: ArrayList<Any>): String {
-//        gson.toJson(userSignUp).pln()
-        return gson.toJson(userSignUp)
-    }
-
-    @TypeConverter
-    fun toArrayList(ValuesString: String): ArrayList<Any> {
-        val type = object : TypeToken<ArrayList<Any>>() {}.type
-        return gson.fromJson<ArrayList<Any>>(ValuesString, type)
+    fun toList(ValuesString: String): List<SignUpData> {
+//        "toList".pln()
+        val type = object : TypeToken<List<SignUpData>>() {}.type
+        return gson.fromJson<List<SignUpData>>(ValuesString, type)
     }
 }
 
@@ -137,12 +126,8 @@ abstract class AppDataBase : RoomDatabase() {
                     AppDataBase::class.java, "SignUp_database")
 //                    .addMigrations(MIGRATION_1_2).
                     .build()
-
-
         }
     }
-}
-//
 //val MIGRATION_1_2: Migration = object : Migration(1, 2) {
 //
 //    override fun migrate(database: SupportSQLiteDatabase) {
@@ -152,3 +137,4 @@ abstract class AppDataBase : RoomDatabase() {
 //    }
 //
 //}
+}

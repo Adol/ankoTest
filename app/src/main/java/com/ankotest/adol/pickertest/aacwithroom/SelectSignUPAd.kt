@@ -35,7 +35,7 @@ class SelectSignUPAd(context: Context) : RecyclerView.Adapter<SelectSignUPAd.Vie
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        lateinit var data: SignUpData
+        lateinit var data: List<SignUpData>
         val nameTv: TextView = itemView.find(TextID)
     }
 
