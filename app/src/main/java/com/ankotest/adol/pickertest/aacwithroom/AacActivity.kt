@@ -100,7 +100,7 @@ class ViewClass(ctx: Context) : _ViewPager(ctx) {
     }
 }
 
-class ViewpagerFm(val fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     //    private lateinit var tempFrag: SignUpFragment
     private val fragments = linkedMapOf<String, Fragment>()
 
