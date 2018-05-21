@@ -44,7 +44,7 @@ class SignUpFragment : Fragment() {
     private fun setVm() {
         //VM取得db資料
         vm = getViewModel(this)
-        vm.getData(this, title, {
+        vm.getData(this,title, {
             val selectItmeadapter = SelectSignUPAd(act)
             showItme.adapter = selectItmeadapter
             selectItmeadapter.setIt(it)

@@ -3,7 +3,6 @@ package com.ankotest.adol.pickertest.aacwithroom
 import android.arch.lifecycle.MutableLiveData
 import android.arch.persistence.room.*
 import android.content.Context
-import com.ankotest.adol.pickertest.api.pln
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -38,8 +37,8 @@ interface SignUpDao {
     @Update
     fun upDateSign(up: SignUpTable)
 
-    @Query("select * from SignUpTable")
-    fun getAll(): List<SignUpTable>
+    @Query("select * from SignUpTable where month = :mt")
+    fun getAll(mt:Int = 4): List<SignUpTable>
 
     @Query("select * from SignUpTable where title = :stype")
     fun getSignUp(stype: String): List<SignUpTable>
@@ -58,16 +57,11 @@ class SignUpRepository(ctx: Context) {
 
     fun getSignUp(type: String): MutableLiveData<List<SignUpTable>> {
         val data = MutableLiveData<List<SignUpTable>>()
-        type.pln()
         data.postValue(mWordDao.getSignUp(type))
-        "getSignUp".pln()
-//        mWordDao.getSignUp(title).pln()
         return data
     }
 
-    fun getAll(): List<SignUpTable> {
-//        gson.toJson(signUP)
-       Gson().toJson(mWordDao.getAll()).pln()
+    fun getAll():  List<SignUpTable>{
         return mWordDao.getAll()
     }
 

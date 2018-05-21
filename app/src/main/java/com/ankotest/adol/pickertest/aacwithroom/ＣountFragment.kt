@@ -8,11 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ankotest.adol.pickertest.api.getViewModel
-import com.ankotest.adol.pickertest.api.pln
+import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.sp
 import org.jetbrains.anko.support.v4.UI
@@ -21,45 +21,17 @@ import org.jetbrains.anko.wrapContent
 
 class CountFragment : Fragment() {
     lateinit var title: String
-    private lateinit var vm: AacViewModel
-
-//    init {
-//        vm = getViewModel(this)
-//    }
+    private lateinit var vm: AacViewModel2
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        isVisibleToUser.pln()
-        if (isVisibleToUser) setVm()
-        super.setUserVisibleHint(isVisibleToUser)
-    }
-
-    private lateinit var totalDa: Array<Int>
-    private fun setVm() {
-        bg {
-            vm.getData(this).forEach {
-                it.name.pln()
+        val act = this
+        if (isVisibleToUser) {
+            launch {
+                delay(200)
+                vm.getCount(act)
             }
         }
-        "Ｄ@@@@@@@@@@@@@@@@@@@@@".pln()
-//        vm.getData(this, "All", {
-//            "DB Change ".pln()
-//            totalDa = arrayOf(0,0,0,0,0,0)
-//            it.forEach {
-//                it.userData.data.forEach {
-//
-////                    "${it.key}".pln()
-////                    it.value.forEach {
-////                        it.pln()
-////                    }
-//                    when (it.value[1]) {
-//                        2 -> totalDa[it.value[0]] ++
-//                    }
-//                }
-//            }
-//            totalDa.forEach {
-//                it.pln()
-//            }
-//        })
+        super.setUserVisibleHint(isVisibleToUser)
     }
 
 

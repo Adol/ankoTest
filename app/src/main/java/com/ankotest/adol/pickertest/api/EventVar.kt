@@ -14,5 +14,5 @@ class EventVar {
 
         var fragmentTrans = true
         var hasChange = true
-   }
+    }
 }
