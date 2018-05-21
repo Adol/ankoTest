@@ -15,6 +15,7 @@ import com.ankotest.adol.pickertest.api.DeviceInfo
 import com.ankotest.adol.pickertest.api.Easing
 import com.ankotest.adol.pickertest.api.EventVar
 import com.ankotest.adol.pickertest.api.getViewModel
+import com.ankotest.adol.pickertest.model.SignUpTable
 import com.github.florent37.kotlin.pleaseanimate.please
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
@@ -35,7 +36,7 @@ import org.jetbrains.anko.wrapContent
 
 class SignUpFragment : Fragment() {
     lateinit var title: String
-    private lateinit var vm: AacViewModel
+    private lateinit var vm: SignVM
     private lateinit var showItme: RecyclerView
     private var itemNum = 0
 

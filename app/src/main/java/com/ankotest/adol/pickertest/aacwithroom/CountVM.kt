@@ -3,11 +3,12 @@ package com.ankotest.adol.pickertest.aacwithroom
 import android.arch.lifecycle.ViewModel
 import android.support.v4.app.Fragment
 import com.ankotest.adol.pickertest.api.pln
+import com.ankotest.adol.pickertest.model.SignUpRepository
 import com.google.gson.Gson
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.support.v4.act
 
-class AacViewModel2 : ViewModel() {
+class CountVM : ViewModel() {
     private val db by lazy { SignUpRepository(owner.act) }
 //    private var conut = listOf()
 

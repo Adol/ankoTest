@@ -21,7 +21,7 @@ import org.jetbrains.anko.wrapContent
 
 class CountFragment : Fragment() {
     lateinit var title: String
-    private lateinit var vm: AacViewModel2
+    private lateinit var vm: CountVM
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         val act = this

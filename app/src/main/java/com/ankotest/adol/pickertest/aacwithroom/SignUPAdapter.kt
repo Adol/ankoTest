@@ -7,6 +7,8 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.ankotest.adol.pickertest.model.SignUpData
+import com.ankotest.adol.pickertest.model.SignUpTable
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout.applyConstraintSet

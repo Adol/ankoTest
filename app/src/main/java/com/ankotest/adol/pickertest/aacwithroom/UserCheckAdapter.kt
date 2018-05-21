@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.ankotest.adol.pickertest.R
 import com.ankotest.adol.pickertest.api.EventVar
 import com.ankotest.adol.pickertest.api.pln
+import com.ankotest.adol.pickertest.model.SignUpData
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout._ConstraintLayout

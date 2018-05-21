@@ -12,6 +12,7 @@ import android.view.View
 import com.ankotest.adol.pickertest.api.DeviceInfo
 import com.ankotest.adol.pickertest.api.EventVar
 import com.ankotest.adol.pickertest.api.viewClass
+import com.ankotest.adol.pickertest.model.SignUpRepository
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch

@@ -6,13 +6,15 @@ import android.arch.lifecycle.ViewModel
 import android.support.v4.app.Fragment
 import com.ankotest.adol.pickertest.api.EventVar
 import com.ankotest.adol.pickertest.api.pln
+import com.ankotest.adol.pickertest.model.SignUpRepository
+import com.ankotest.adol.pickertest.model.SignUpTable
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.support.v4.act
 
-class AacViewModel : ViewModel() {
+class SignVM : ViewModel() {
     private val db by lazy {
         SignUpRepository(owner.act)
     }
