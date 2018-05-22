@@ -13,6 +13,7 @@ import com.ankotest.adol.pickertest.api.DeviceInfo
 import com.ankotest.adol.pickertest.api.EventVar
 import com.ankotest.adol.pickertest.api.viewClass
 import com.ankotest.adol.pickertest.model.SignUpRepository
+import com.ankotest.adol.pickertest.model.getUser
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
@@ -21,6 +22,7 @@ import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
+import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.setContentView
 import org.jetbrains.anko.support.v4._ViewPager
@@ -40,22 +42,22 @@ class AacActivity : AppCompatActivity() {
 
     private fun getJSON() {
         db = SignUpRepository(ctx)
-//        bg {
-            //            db.deleteAll()
-//            db.insert(getUser("AD", "幹部", "man"))
-//            db.insert(getUser("AD1", "幹部", "man"))
-////            db.insert(getUser("AD2", "幹部", "man"))
-//            db.insert(getUser("ADA", "幹部", "woman"))
-//            db.insert(getUser("ADA1", "幹部", "woman"))
-////            db.insert(getUser("ADA2", "幹部", "woman"))
-//
-//            db.insert(getUser("ad", "學員", "man"))
-//            db.insert(getUser("ad1", "學員", "man"))
-////            db.insert(getUser("ad2", "學員", "man"))
-//            db.insert(getUser("ada", "學員", "woman"))
-//            db.insert(getUser("ada1", "學員", "woman"))
+        bg {
+            db.deleteAll()
+            db.insert(getUser("AD", "幹部", "man"))
+            db.insert(getUser("AD1", "幹部", "man"))
+//            db.insert(getUser("AD2", "幹部", "man"))
+            db.insert(getUser("ADA", "幹部", "woman"))
+            db.insert(getUser("ADA1", "幹部", "woman"))
+//            db.insert(getUser("ADA2", "幹部", "woman"))
+
+            db.insert(getUser("ad", "學員", "man"))
+            db.insert(getUser("ad1", "學員", "man"))
+//            db.insert(getUser("ad2", "學員", "man"))
+            db.insert(getUser("ada", "學員", "woman"))
+            db.insert(getUser("ada1", "學員", "woman"))
 //            db.insert(getUser("ada2", "學員", "woman"))
-//        }
+        }
     }
 }
 

@@ -32,6 +32,8 @@ class CountVM : ViewModel() {
         bg {
             db.getAll().let {
                 it.forEach {
+                    it.Type.pln()
+//                    it.userData[0].pln()
                     when (listOf(it.Type, it.sex)) {
                         tm1 -> ti = 0
                         tm2 -> ti = 1

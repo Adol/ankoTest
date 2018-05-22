@@ -45,7 +45,7 @@ class SignUpFragment : Fragment() {
     private fun setVm() {
         //VM取得db資料
         vm = getViewModel(this)
-        vm.getData(this,title, {
+        vm.getData(this, type = title, Fun = {
             val selectItmeadapter = SelectSignUPAd(act)
             showItme.adapter = selectItmeadapter
             selectItmeadapter.setIt(it)
@@ -88,7 +88,7 @@ class SignUpFragment : Fragment() {
         }.start()
         launch(UI) {
             delay(100)
-            detailItem.adapter = UserCheckAdapter(listOf(data.name,data.name),data.userData, ::removeUI)
+            detailItem.adapter = UserCheckAdapter(listOf(data.name, data.name), data.userData, ::removeUI)
         }
     }
 
