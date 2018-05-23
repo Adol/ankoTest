@@ -20,7 +20,7 @@ import com.google.gson.reflect.TypeToken
 data class SignUpTable(@PrimaryKey(autoGenerate = true)
                        @ColumnInfo(name = "id") var id: Int = 0,
                        @ColumnInfo(name = "month") var month: Int,
-                       @ColumnInfo(name = "title") var Type: String,
+                       @ColumnInfo(name = "Identity") var Identity: String,
                        @ColumnInfo(name = "sex") var sex: String,
                        @ColumnInfo(name = "name") var name: String,
                        @ColumnInfo(name = "userData") var userData: List<SignUpData>
@@ -40,8 +40,8 @@ interface SignUpDao {
     @Query("select * from SignUpTable where month = :mt")
     fun getAll(mt:Int = 4): List<SignUpTable>
 
-    @Query("select * from SignUpTable where title = :stype")
-    fun getSignUp(stype: String): List<SignUpTable>
+    @Query("select * from SignUpTable where Identity = :identity")
+    fun getSignUp(identity: String): List<SignUpTable>
 
     @Query("DELETE FROM SignUpTable")
     fun deleteAll()
