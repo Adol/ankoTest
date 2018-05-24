@@ -35,6 +35,7 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
         itemSize = data.size
         //取得原本資料
         data.forEach {
+            it.title.pln()
             oldStatus += arrayOf(it.signUp[1])
         }
     }
@@ -68,10 +69,7 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
 
     //Override -----------------------
     override fun getItemCount(): Int {
-        when (itemSize == 0) {
-            false -> itemSize + 2
-        }
-        return itemSize
+        if (itemSize != 0) return itemSize + 2 else return itemSize
     }
 
     override fun getItemViewType(position: Int): Int = position

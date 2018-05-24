@@ -6,17 +6,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.ankotest.adol.pickertest.api.pln
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout._ConstraintLayout
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
 import org.jetbrains.anko.dip
+import org.jetbrains.anko.leftPadding
 import org.jetbrains.anko.sp
 import org.jetbrains.anko.textView
 
 class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
-    private var itemSize: Int = 0
+    var itemSize: Int = 0
     private lateinit var countData: CountData
     //    private var hasChange :Boolean
     // Button Event ------------
@@ -25,8 +25,8 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
     fun setIt(item: CountData) {
         countData = item
         itemSize = countData.old.size
-        "setIt".pln()
-        notifyDataSetChanged()
+//        "setIt".pln()
+//        notifyDataSetChanged()
     }
 
     //Override -----------------------
@@ -72,7 +72,7 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
                     id = View.generateViewId()
                     textSize = sp(9).toFloat()
                 }.lparams{
-                    left = dip(40)
+                    leftPadding = dip(40)
                 }
                 showText2 = textView("body1") {
                     id = View.generateViewId()

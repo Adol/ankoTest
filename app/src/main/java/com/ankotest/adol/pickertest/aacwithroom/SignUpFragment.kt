@@ -70,6 +70,7 @@ class SignUpFragment : Fragment() {
     }
 
     private fun showSelectUI(data: SignUpTable) {
+        EventVar.fragmentTrans = false
         please {
             animate(detailItem) toBe {
                 scale(1f, 0.3f)
@@ -94,6 +95,7 @@ class SignUpFragment : Fragment() {
 
     private fun removeUI() {
         if (EventVar.hasChange) vm.upDate(itemNum)
+        EventVar.fragmentTrans = true
         please(interpolator = DecelerateInterpolator()) {
             //            animate(checkbg) toBe {
 //                alpha(0f)

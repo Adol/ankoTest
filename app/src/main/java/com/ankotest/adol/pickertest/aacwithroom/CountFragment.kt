@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.ankotest.adol.pickertest.api.DeviceInfo
 import com.ankotest.adol.pickertest.api.getViewModel
+import com.ankotest.adol.pickertest.api.pln
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
@@ -32,22 +33,26 @@ class CountFragment : Fragment() {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         if (isVisibleToUser) {
             val act = this
-            vm.getCount(act, ::showData)
+            vm.getCount(act, {
+                val countAdapter = CountAdapter()
+                dataRecycle.adapter = countAdapter
+                countAdapter.setIt(it)
+                dataRecycle.adapter.notifyDataSetChanged()
+            })
         } else {
-            if (notNull) dataRecycle.removeAllViews()
+            "D".pln()
+            if (notNull) {
+                dataRecycle.removeAllViews()
+                dataRecycle.adapter.itemCount.pln()
+                dataRecycle.adapter.notifyDataSetChanged()
+            }
         }
         super.setUserVisibleHint(isVisibleToUser)
     }
 
-    private fun showData(countData: CountData) {
-        val countAdapter = CountAdapter()
-        dataRecycle.adapter = countAdapter
-        countAdapter.setIt(countData)
-    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         vm = getViewModel(this)
         notNull = true
-//        tt()
         return UI {
             constraintLayout {
                 val titleTV = textView(title) {

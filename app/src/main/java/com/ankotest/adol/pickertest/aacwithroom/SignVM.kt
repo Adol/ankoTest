@@ -4,7 +4,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.support.v4.app.Fragment
-import com.ankotest.adol.pickertest.api.EventVar
 import com.ankotest.adol.pickertest.api.pln
 import com.ankotest.adol.pickertest.model.SignUpRepository
 import com.ankotest.adol.pickertest.model.SignUpTable
@@ -41,14 +40,12 @@ class SignVM : ViewModel() {
     }
 
     fun setClick(No: Int, Fun: (SignUpTable) -> Unit) {
-        EventVar.fragmentTrans = false
         dataUserSignUp.value!![No].apply {
             also(Fun)
         }
     }
 
     fun upDate(No: Int) {
-        EventVar.fragmentTrans = true
         bg {
             db.upDate(dataUserSignUp.value!![No])
             dataUserSignUp.postValue(dataUserSignUp.value)
