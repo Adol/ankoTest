@@ -9,10 +9,8 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.ankotest.adol.pickertest.api.DeviceInfo
 import com.ankotest.adol.pickertest.api.getViewModel
-import com.ankotest.adol.pickertest.api.pln
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
@@ -26,31 +24,30 @@ import org.jetbrains.anko.wrapContent
 
 class CountFragment : Fragment() {
     lateinit var title: String
+    private var notNull = false
+
     private lateinit var vm: CountVM
     private lateinit var dataRecycle: RecyclerView
 
-    private fun showData(data:CountData){
-//        dataRecycle.adapter
-
-        data.odl.pln()
-    }
-
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        val act = this
         if (isVisibleToUser) {
-            launch {
-                delay(200)
-                vm.getCount(act,::showData)
-            }
-        }else{
-            dataRecycle.removeAllViews()
+            val act = this
+            vm.getCount(act, ::showData)
+        } else {
+            if (notNull) dataRecycle.removeAllViews()
         }
         super.setUserVisibleHint(isVisibleToUser)
     }
 
-
+    private fun showData(countData: CountData) {
+        val countAdapter = CountAdapter()
+        dataRecycle.adapter = countAdapter
+        countAdapter.setIt(countData)
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         vm = getViewModel(this)
+        notNull = true
+//        tt()
         return UI {
             constraintLayout {
                 val titleTV = textView(title) {
@@ -58,13 +55,25 @@ class CountFragment : Fragment() {
                     textSize = sp(14).toFloat()
                     gravity = Gravity.CENTER
                 }.lparams(matchParent, wrapContent)
-                dataRecycle = recyclerView{
+
+                dataRecycle = recyclerView {
+                    id = View.generateViewId()
                     layoutManager = LinearLayoutManager(act)
-                }
+                }.lparams(DeviceInfo.data.mW)
+                //Error adapter not work
+//                }.lparams(matchConstraint,matchConstraint)
+
                 applyConstraintSet {
                     titleTV {
                         connect(
                                 TOP to TOP of PARENT_ID,
+                                START to START of PARENT_ID,
+                                END to END of PARENT_ID
+                        )
+                    }
+                    dataRecycle {
+                        connect(
+                                TOP to BOTTOM of titleTV,
                                 START to START of PARENT_ID,
                                 END to END of PARENT_ID
                         )

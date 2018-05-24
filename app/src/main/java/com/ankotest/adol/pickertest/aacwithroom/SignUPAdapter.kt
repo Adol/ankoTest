@@ -44,37 +44,36 @@ class SelectSignUPAd(context: Context) : RecyclerView.Adapter<SelectSignUPAd.Vie
     companion object {
         const val TextID = 0
     }
-}
+    inner class SelectNameAdapterUI : AnkoComponent<SelectSignUPAd> {
+        override fun createView(ui: AnkoContext<SelectSignUPAd>) = with(ui) {
+            constraintLayout {
+                leftPadding = 90
+                val title = textView("Button") {
+                    id = SelectSignUPAd.TextID
+                    textSize = 24f
+                    gravity = Gravity.CENTER
+                }.lparams(wrapContent, wrapContent)
+                val bgView = view {
+                    id = View.generateViewId()
+                }.lparams(matchParent, height = dip(55))
+                applyConstraintSet {
+                    title {
+                        connect(
+                                TOP to TOP of PARENT_ID,
+                                START to START of PARENT_ID
+                        )
+                    }
+                    bgView {
+                        connect(
+                                TOP to TOP of PARENT_ID,
+                                START to START of PARENT_ID,
+                                END to END of PARENT_ID
+                        )
+                    }
 
-class SelectNameAdapterUI : AnkoComponent<SelectSignUPAd> {
-    override fun createView(ui: AnkoContext<SelectSignUPAd>) = with(ui) {
-        constraintLayout {
-            leftPadding = 90
-            val title = textView("Button") {
-                id = SelectSignUPAd.TextID
-                textSize = 24f
-                gravity = Gravity.CENTER
-            }.lparams(wrapContent, wrapContent)
-            val bgView = view {
-                id = View.generateViewId()
-            }.lparams(matchParent, height = dip(55))
-            applyConstraintSet {
-                title {
-                    connect(
-                            TOP to TOP of PARENT_ID,
-                            START to START of PARENT_ID
-//                            END to END of PARENT_ID
-                    )
                 }
-                bgView {
-                    connect(
-                            TOP to TOP of PARENT_ID,
-                            START to START of PARENT_ID,
-                            END to END of PARENT_ID
-                    )
-                }
-
             }
         }
     }
 }
+

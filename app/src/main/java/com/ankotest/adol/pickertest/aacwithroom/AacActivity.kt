@@ -36,7 +36,7 @@ class AacActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DeviceInfo.getInfo(this)
-        getJSON()
+//        getJSON()
         AacUi(supportFragmentManager).setContentView(this)
     }
 
@@ -107,7 +107,7 @@ class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
     init {
         fragments["幹部"] = SignUpFragment()
-        fragments["學員"] = SignUpFragment()
+//        fragments["學員"] = SignUpFragment()
         fragments["統計"] = CountFragment()
     }
 

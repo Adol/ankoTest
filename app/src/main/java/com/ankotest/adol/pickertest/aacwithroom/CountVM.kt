@@ -1,5 +1,7 @@
 package com.ankotest.adol.pickertest.aacwithroom
 
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.support.v4.app.Fragment
 import com.ankotest.adol.pickertest.api.pln
@@ -11,7 +13,7 @@ import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.support.v4.act
 
-data class CountData(var odl: MutableMap<String, Int>, var status: MutableList<IntArray>)
+data class CountData(var old: MutableMap<String, Int>, var status: MutableList<IntArray>)
 
 class CountVM : ViewModel() {
     private val db by lazy { SignUpRepository(owner.act) }
@@ -37,11 +39,15 @@ class CountVM : ViewModel() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         it[0].userData.forEach {
-                            countData.odl.set(it.title, it.signUp[0])
+                            countData.old.set(it.title, it.signUp[0])
                         }
-                        "getCount".pln()
                         countT(it)
-                        Fun(countData)
+                        val data = MutableLiveData<CountData>()
+                        data.postValue(countData)
+                        data.observe(owner, Observer {
+                            "getCount".pln()
+                            it!!.also(Fun)
+                        })
                     })
         }
     }
