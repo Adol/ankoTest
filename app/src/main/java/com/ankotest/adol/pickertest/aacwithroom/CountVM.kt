@@ -4,50 +4,61 @@ import android.arch.lifecycle.ViewModel
 import android.support.v4.app.Fragment
 import com.ankotest.adol.pickertest.api.pln
 import com.ankotest.adol.pickertest.model.SignUpRepository
-import com.google.gson.Gson
+import com.ankotest.adol.pickertest.model.SignUpTable
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.support.v4.act
 
+data class CountData(var odl: MutableMap<String, Int>, var status: MutableList<IntArray>)
+
 class CountVM : ViewModel() {
     private val db by lazy { SignUpRepository(owner.act) }
-//    private var conut = listOf()
 
     private val tm1 by lazy { listOf("幹部", "man") }
     private val tm2 by lazy { listOf("幹部", "woman") }
     private val tm3 by lazy { listOf("學員", "man") }
     private val tm4 by lazy { listOf("學員", "woman") }
 
-    private val eatStatus by lazy {
-        MutableList(4, {
-            IntArray(10, { 0 })
-        })
-    }
-
     private lateinit var owner: Fragment
 
-    fun getCount(owner: Fragment): MutableList<IntArray> {
+    private lateinit var countData: CountData
+
+    fun getCount(owner: Fragment, Fun: (CountData) -> Unit) {
         this.owner = owner
-        var ti = 0
+        countData = CountData(mutableMapOf(), MutableList(4, {
+            IntArray(10, { 0 })
+        }))
 
         bg {
-            db.getAll().let {
-                it.forEach {
-                    it.Identity.pln()
-//                    it.userData[0].pln()
-                    when (listOf(it.Identity, it.sex)) {
-                        tm1 -> ti = 0
-                        tm2 -> ti = 1
-                        tm3 -> ti = 2
-                        tm4 -> ti = 3
-                    }
-
-                    it.userData.forEach {
-                        if (it.signUp[1] == 2) eatStatus[ti][it.signUp[0]]++
-                    }
-                }
-            }
-            Gson().toJson(eatStatus).pln()
+            Flowable.just(db.getAll())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        it[0].userData.forEach {
+                            countData.odl.set(it.title, it.signUp[0])
+                        }
+                        "getCount".pln()
+                        countT(it)
+                        Fun(countData)
+                    })
         }
-        return eatStatus
+    }
+
+    private fun countT(data: List<SignUpTable>) {
+        var ti = 0
+        data.forEach {
+            when (listOf(it.Identity, it.sex)) {
+                tm1 -> ti = 0
+                tm2 -> ti = 1
+                tm3 -> ti = 2
+                tm4 -> ti = 3
+            }
+
+            it.userData.forEach {
+                if (it.signUp[1] == 2) countData.status[ti][it.signUp[0]]++
+            }
+        }
     }
 }

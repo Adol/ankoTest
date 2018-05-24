@@ -149,7 +149,7 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
             constraintLayout {
                 lparams(thisWidth, dip(55))
                 onClick {
-                    when (data[itemNum].signUp[1]) {
+                    when (data[itemNum].signUp[2]) {
                         2 -> data[itemNum].signUp[1] = 0
                         0 -> data[itemNum].signUp[1] = 2
                     }
