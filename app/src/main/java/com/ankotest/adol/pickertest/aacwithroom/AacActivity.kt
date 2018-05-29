@@ -36,7 +36,7 @@ class AacActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DeviceInfo.getInfo(this)
-//        getJSON()
+        getJSON()
         AacUi(supportFragmentManager).setContentView(this)
     }
 

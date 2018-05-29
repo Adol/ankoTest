@@ -77,6 +77,8 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
                 showText2 = textView("body1") {
                     id = View.generateViewId()
                     textSize = sp(9).toFloat()
+                }.lparams{
+                    leftToLeft = dip(80)
                 }
 
 
@@ -91,7 +93,7 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
                     showText2 {
                         connect(
                                 TOP to BOTTOM of showText,
-                                START to END of showText
+                                START to START of PARENT_ID
 //                                END to END of PARENT_ID
                         )
                     }
