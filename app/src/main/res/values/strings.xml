@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">pickerTest</string>
+    <string name="app_name" translatable="false">AnkoProject</string>
     <string name="action_settings" translatable="false">Settings</string>
     <string name="hello_wordddd" translatable="false">hello_word</string>
     <string name="PickerActivity" translatable="false">PickerActivity</string>

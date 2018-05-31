@@ -30,7 +30,7 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
     private var oldStatus: Array<Int> = arrayOf()
 
     init {
-        "init".pln()
+//        "init".pln()
         EventVar.hasChange = true
         itemSize = data.size
         //取得原本資料

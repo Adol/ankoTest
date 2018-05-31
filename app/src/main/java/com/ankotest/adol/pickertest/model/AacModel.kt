@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken
 
 
 //data class SignUpData(val data:List<Data>){
-    data class SignUpData(val title: String, val signUp:MutableList<Int>)
+data class SignUpData(val title: String, val signUp: MutableList<Int>)
 //}
 /*Array [a,b,c]
  a - 按鈕類型  0 用餐 1 上課
@@ -38,7 +38,7 @@ interface SignUpDao {
     fun upDateSign(up: SignUpTable)
 
     @Query("select * from SignUpTable where month = :mt")
-    fun getAll(mt:Int = 4): List<SignUpTable>
+    fun getAll(mt: Int = 4): List<SignUpTable>
 
     @Query("select * from SignUpTable where Identity = :identity")
     fun getSignUp(identity: String): List<SignUpTable>
@@ -61,7 +61,7 @@ class SignUpRepository(ctx: Context) {
         return data
     }
 
-    fun getAll():  List<SignUpTable>{
+    fun getAll(): List<SignUpTable> {
         return mWordDao.getAll()
     }
 
@@ -110,8 +110,8 @@ abstract class AppDataBase : RoomDatabase() {
             INSTANCE ?: synchronized(this) {
                 INSTANCE
                         ?: buildDatabase(context).also {
-                    INSTANCE = it
-                }
+                            INSTANCE = it
+                        }
             }
             return INSTANCE
         }

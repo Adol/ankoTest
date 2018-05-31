@@ -9,12 +9,12 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.ankotest.adol.pickertest.api.DeviceInfo
 import com.ankotest.adol.pickertest.api.getViewModel
 import com.ankotest.adol.pickertest.api.pln
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
+import org.jetbrains.anko.constraint.layout.matchConstraint
 import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.sp
@@ -31,20 +31,18 @@ class CountFragment : Fragment() {
     private lateinit var dataRecycle: RecyclerView
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        "setUserVisibleHint".pln()
         if (isVisibleToUser) {
             val act = this
             vm.getCount(act, {
                 val countAdapter = CountAdapter()
                 dataRecycle.adapter = countAdapter
                 countAdapter.setIt(it)
-                dataRecycle.adapter.notifyDataSetChanged()
             })
         } else {
-            "D".pln()
             if (notNull) {
-                dataRecycle.removeAllViews()
-                dataRecycle.adapter.itemCount.pln()
-                dataRecycle.adapter.notifyDataSetChanged()
+//                dataRecycle.removeAllViews()
+//                (dataRecycle.adapter as CountAdapter).resert()
             }
         }
         super.setUserVisibleHint(isVisibleToUser)
@@ -64,9 +62,8 @@ class CountFragment : Fragment() {
                 dataRecycle = recyclerView {
                     id = View.generateViewId()
                     layoutManager = LinearLayoutManager(act)
-                }.lparams(DeviceInfo.data.mW)
-                //Error adapter not work
-//                }.lparams(matchConstraint,matchConstraint)
+                    //必須 BOTTOM to BOTTOM of PARENT_ID
+                }.lparams(matchConstraint,matchConstraint)
 
                 applyConstraintSet {
                     titleTV {
@@ -80,7 +77,8 @@ class CountFragment : Fragment() {
                         connect(
                                 TOP to BOTTOM of titleTV,
                                 START to START of PARENT_ID,
-                                END to END of PARENT_ID
+                                END to END of PARENT_ID,
+                                BOTTOM to BOTTOM of PARENT_ID
                         )
                     }
                 }

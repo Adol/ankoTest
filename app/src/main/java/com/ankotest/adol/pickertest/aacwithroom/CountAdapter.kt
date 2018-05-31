@@ -6,17 +6,14 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout._ConstraintLayout
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.leftPadding
-import org.jetbrains.anko.sp
-import org.jetbrains.anko.textView
 
 class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
-    var itemSize: Int = 0
+    private var itemSize: Int = 0
     private lateinit var countData: CountData
     //    private var hasChange :Boolean
     // Button Event ------------
@@ -24,9 +21,13 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
 
     fun setIt(item: CountData) {
         countData = item
-        itemSize = countData.old.size
-//        "setIt".pln()
-//        notifyDataSetChanged()
+        itemSize = countData.older.size
+        notifyDataSetChanged()
+    }
+
+    fun resert() {
+        itemSize = 0
+        notifyDataSetChanged()
     }
 
     //Override -----------------------
@@ -48,10 +49,7 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         (holder.itemView as Information).apply {
-//            position.pln()
-            val i = countData.old.values.elementAt(position)
-
-            setItem(countData.old.keys.elementAt(position),countData.status[0][i].toString() )
+            setItem(position, countData.older.values.elementAt(position))
         }
     }
 
@@ -60,25 +58,30 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
     inner class Information(ctx: Context) : _ConstraintLayout(ctx) {
         private lateinit var showText: TextView
         private lateinit var showText2: TextView
-        fun setItem(s1:String,s2:String) {
-            showText.text = s1
-            showText2.text = s2
+        fun setItem(position: Int, older: Int) {
+            showText.text = countData.older.keys.elementAt(position)
+            val total1 = countData.status[0][older] + countData.status[1][older]
+            val total2 = countData.status[2][older] + countData.status[3][older]
+            val status1 = "幹部  $total1 (${countData.status[0][older]}/${countData.status[1][older]})"
+            val status2 = "學員  $total2 (${countData.status[2][older]}/${countData.status[3][older]})"
+
+            showText2.text = "$status1  $status2"
         }
 
         init {
             constraintLayout {
-                lparams(thisWidth, dip(65))
+                lparams(matchParent, dip(75))
                 showText = textView("body1") {
                     id = View.generateViewId()
                     textSize = sp(9).toFloat()
-                }.lparams{
+                }.lparams {
                     leftPadding = dip(40)
                 }
                 showText2 = textView("body1") {
                     id = View.generateViewId()
                     textSize = sp(9).toFloat()
-                }.lparams{
-                    leftToLeft = dip(80)
+                }.lparams {
+                    leftMargin = dip(30)
                 }
 
 
@@ -87,6 +90,7 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
                         connect(
                                 TOP to TOP of PARENT_ID,
                                 START to START of PARENT_ID
+//                                BOTTOM to BOTTOM of PARENT_ID
 //                                END to END of PARENT_ID
                         )
                     }
@@ -95,6 +99,7 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
                                 TOP to BOTTOM of showText,
                                 START to START of PARENT_ID
 //                                END to END of PARENT_ID
+//                                BOTTOM to BOTTOM of PARENT_ID
                         )
                     }
                 }

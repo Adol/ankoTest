@@ -4,7 +4,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.support.v4.app.Fragment
-import com.ankotest.adol.pickertest.api.pln
 import com.ankotest.adol.pickertest.model.SignUpRepository
 import com.ankotest.adol.pickertest.model.SignUpTable
 import io.reactivex.Flowable
@@ -13,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.support.v4.act
 
-data class CountData(var old: MutableMap<String, Int>, var status: MutableList<IntArray>)
+data class CountData(var older: MutableMap<String, Int>, var status: MutableList<IntArray>)
 
 class CountVM : ViewModel() {
     private val db by lazy { SignUpRepository(owner.act) }
@@ -24,7 +23,6 @@ class CountVM : ViewModel() {
     private val tm4 by lazy { listOf("學員", "woman") }
 
     private lateinit var owner: Fragment
-
     private lateinit var countData: CountData
 
     fun getCount(owner: Fragment, Fun: (CountData) -> Unit) {
@@ -39,13 +37,13 @@ class CountVM : ViewModel() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         it[0].userData.forEach {
-                            countData.old.set(it.title, it.signUp[0])
+                            countData.older.set(it.title, it.signUp[0])
                         }
                         countT(it)
                         val data = MutableLiveData<CountData>()
                         data.postValue(countData)
                         data.observe(owner, Observer {
-                            "getCount".pln()
+//                            "getCount".pln()
                             it!!.also(Fun)
                         })
                     })
