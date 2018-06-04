@@ -108,7 +108,7 @@ class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     init {
         fragments["幹部"] = SignUpFragment()
         fragments["學員"] = SignUpFragment()
-        fragments["統計"] = CountFragment()
+        fragments["回報"] = CountFragment()
     }
 
 //    override fun getItemPosition(ob: Any): Int {

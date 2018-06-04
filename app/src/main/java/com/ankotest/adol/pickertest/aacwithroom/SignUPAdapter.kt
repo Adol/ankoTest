@@ -2,7 +2,6 @@ package com.ankotest.adol.pickertest.aacwithroom
 
 import android.content.Context
 import android.support.constraint.ConstraintSet.PARENT_ID
-import android.support.constraint.ConstraintSet.VERTICAL
 import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.View
@@ -17,7 +16,6 @@ import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout._ConstraintLayout
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
-import org.jetbrains.anko.constraint.layout.guideline
 
 class SelectSignUPAd(val context: Context) : RecyclerView.Adapter<SelectSignUPAd.ViewHolder>() {
     private var items: List<SignUpTable> = listOf()
@@ -39,88 +37,127 @@ class SelectSignUPAd(val context: Context) : RecyclerView.Adapter<SelectSignUPAd
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.data = items[position].userData
         holder.nameTv.text = items[position].name
+//        holder.data = items[position].userData
+        (holder.itemView as? Information).let {
+            it!!.setStatus(items[position].userData)
+        }
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        lateinit var data: List<SignUpData>
+        //        lateinit var data: List<SignUpData>
         val nameTv: TextView = itemView.find(R.id.TextID)
     }
 
+    //
     //Anko 寫法
     inner class Information(ctx: Context) : _ConstraintLayout(ctx) {
+        fun setStatus(data: List<SignUpData>) {
+            data.forEach {
+                val temp = it.signUp[1]
+                when (it.signUp[0]) {
+                    in 5..9 -> {
+                        if (temp == 2) show(it.signUp[0])
+                    }
+//                when (listOf(it.signUp[0],it.signUp[0])) {
+//                    listOf(5, 2) -> mt[2].visibility = View.VISIBLE
+//                    listOf(6, 2) -> mt[3].visibility = View.VISIBLE
+//                    listOf(7, 2) -> mt[4].visibility = View.VISIBLE
+//                    listOf(8, 2) -> mt[5].visibility = View.VISIBLE
+//                    listOf(9, 2) -> mt[6].visibility = View.VISIBLE
+                }
+            }
+        }
+
+        fun show(i: Int) {
+            mt[i-3].visibility = View.VISIBLE
+            if (i < 8) mt[0].visibility = View.VISIBLE else mt[1].visibility = View.VISIBLE
+        }
+
+        private var mt = mutableListOf<TextView>()
+
+        private fun setT(T: TextView, textS: Int = 5, visibInt: Int = View.GONE): TextView {
+            return T.apply {
+                textSize = sp(textS).toFloat()
+                visibility = visibInt
+
+                gravity = Gravity.CENTER
+                paint.isFakeBoldText = true
+            }
+        }
+
+
         init {
             constraintLayout {
                 lparams(DeviceInfo.data.mW - 180)
                 leftPadding = 90
 
-                val guideline = guideline() {
-                    id = View.generateViewId()
-                }.lparams {
-                    orientation = VERTICAL
-                }
+                val title = textView("Button") { id = R.id.TextID }.let { setT(it, 12, 0) }
+                mt.add(textView("D1出席") { id = View.generateViewId() }.let { setT(it) })
+                mt.add(textView("D2出席") { id = View.generateViewId() }.let { setT(it) })
 
-                val title = textView("Button") {
-                    id = R.id.TextID
-                    textSize = sp(12).toFloat()
-                }
+                mt.add(textView("上午") { id = View.generateViewId() }.let { setT(it) })
+                mt.add(textView("下午") { id = View.generateViewId() }.let { setT(it) })
+                mt.add(textView("晚上") { id = View.generateViewId() }.let { setT(it) })
 
-                val s1 = textView("上午") {
-                    id = View.generateViewId()
-                    gravity = Gravity.CENTER
-                    textSize = sp(5).toFloat()
-                    leftPadding = title.width
-                }
-                val s2 = textView("下午") {
-                    id = View.generateViewId()
-                    gravity = Gravity.CENTER
-                    textSize = sp(5).toFloat()
-                    leftPadding = title.width
-                    visibility = View.GONE
-                }
-                val s3 = textView("晚上") {
-                    id = View.generateViewId()
-                    gravity = Gravity.CENTER
-                    textSize = sp(5).toFloat()
-                    leftPadding = title.width
-                    visibility = View.GONE
-                }
+                mt.add(textView("上午") { id = View.generateViewId() }.let { setT(it) })
+                mt.add(textView("下午") { id = View.generateViewId() }.let { setT(it) })
+                mt.add(textView("晚上") { id = View.generateViewId() }.let { setT(it) })
 
                 applyConstraintSet {
-                    guideline {
-                        connect(
-                                TOP to TOP of PARENT_ID,
-                                START to START of PARENT_ID margin 200
-                        )
-                    }
                     title {
                         connect(
                                 TOP to TOP of PARENT_ID,
-                                START to START of guideline,
+                                START to START of PARENT_ID,
                                 BOTTOM to BOTTOM of PARENT_ID
                         )
                     }
-
-                    s1 {
+                    mt[0]{
                         connect(
-                                TOP to TOP of s3,
-                                END to START of s2 margin dip(5)
-//                                BOTTOM to BOTTOM of PARENT_ID
+                                TOP to TOP of PARENT_ID,
+                                END to START of mt[2] margin dip(5)
                         )
                     }
-                    s2 {
+                    mt[2] {
                         connect(
-                                TOP to TOP of s3,
-                                END to START of s3 margin dip(5)
-//                                BOTTOM to BOTTOM of PARENT_ID
+                                TOP to TOP of PARENT_ID,
+                                END to START of mt[3] margin dip(5)
                         )
                     }
-                    s3 {
+                    mt[3] {
+                        connect(
+                                TOP to TOP of PARENT_ID,
+                                END to START of mt[4] margin dip(5)
+                        )
+                    }
+                    mt[4] {
                         connect(
                                 TOP to TOP of PARENT_ID,
                                 END to END of PARENT_ID
-//                                BOTTOM to BOTTOM of PARENT_ID
+                        )
+                    }
+                    mt[1]{
+                        connect(
+                                BOTTOM to BOTTOM of PARENT_ID,
+                                END to START of mt[5] margin dip(5)
+                        )
+                    }
+                    mt[5] {
+                        connect(
+                                BOTTOM to BOTTOM of PARENT_ID,
+                                END to START of mt[6] margin dip(5)
+                        )
+                    }
+                    mt[6] {
+                        connect(
+                                BOTTOM to BOTTOM of PARENT_ID,
+                                END to START of mt[7] margin dip(5)
+                        )
+                    }
+                    mt[7] {
+                        connect(
+                                BOTTOM to BOTTOM of PARENT_ID,
+                                END to END of PARENT_ID
                         )
                     }
                 }
