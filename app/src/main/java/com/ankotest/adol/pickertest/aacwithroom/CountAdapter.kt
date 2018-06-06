@@ -62,7 +62,7 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
             showText.text = countData.older.keys.elementAt(position)
             val total1 = countData.status[0][older] + countData.status[1][older]
             val total2 = countData.status[2][older] + countData.status[3][older]
-            val status1 = "幹部  $total1 (${countData.status[0][older]}/${countData.status[1][older]})"
+            val status1 = "幹部  $total1 (${countData.status[0][older]}/${countData.status[1][older]})  "
             val status2 = "學員  $total2 (${countData.status[2][older]}/${countData.status[3][older]})"
             val t = status1 + status2
             showText2.text = t
@@ -70,7 +70,7 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
 
         init {
             constraintLayout {
-                lparams(matchParent, dip(75))
+                lparams(matchParent, dip(65))
                 showText = textView("body1") {
                     id = View.generateViewId()
                     textSize = sp(9).toFloat()

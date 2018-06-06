@@ -17,7 +17,7 @@ import org.jetbrains.anko.constraint.layout._ConstraintLayout
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
 
-class SelectSignUPAd(val context: Context) : RecyclerView.Adapter<SelectSignUPAd.ViewHolder>() {
+class SelectSignUPAd : RecyclerView.Adapter<SelectSignUPAd.ViewHolder>() {
     private var items: List<SignUpTable> = listOf()
 
     fun setIt(item: List<SignUpTable>) {
@@ -33,45 +33,43 @@ class SelectSignUPAd(val context: Context) : RecyclerView.Adapter<SelectSignUPAd
 //        val ankoT = AnkoContext.createReusable(context, this)
 //        return ViewHolder(Information2().createView(ankoT))
         //自訂View 建構方法
-        return ViewHolder(Information(context))
+        return ViewHolder(Information(parent.context))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.nameTv.text = items[position].name
-//        holder.data = items[position].userData
         (holder.itemView as? Information).let {
             it!!.setStatus(items[position].userData)
         }
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //        lateinit var data: List<SignUpData>
         val nameTv: TextView = itemView.find(R.id.TextID)
     }
 
-    //
     //Anko 寫法
     inner class Information(ctx: Context) : _ConstraintLayout(ctx) {
         fun setStatus(data: List<SignUpData>) {
             data.forEach {
-                val temp = it.signUp[1]
-                when (it.signUp[0]) {
-                    in 5..9 -> {
-                        if (temp == 2) show(it.signUp[0])
+                when (it.signUp[1]) {
+                    2 -> {
+                        show(it.signUp[0])
                     }
-//                when (listOf(it.signUp[0],it.signUp[0])) {
-//                    listOf(5, 2) -> mt[2].visibility = View.VISIBLE
-//                    listOf(6, 2) -> mt[3].visibility = View.VISIBLE
-//                    listOf(7, 2) -> mt[4].visibility = View.VISIBLE
-//                    listOf(8, 2) -> mt[5].visibility = View.VISIBLE
-//                    listOf(9, 2) -> mt[6].visibility = View.VISIBLE
                 }
             }
         }
 
-        fun show(i: Int) {
-            mt[i-3].visibility = View.VISIBLE
-            if (i < 8) mt[0].visibility = View.VISIBLE else mt[1].visibility = View.VISIBLE
+        private fun show(i: Int) {
+            if (i > 4) {
+//                mt[i - 3].alpha = 0f
+                mt[i - 3].visibility = View.VISIBLE
+                if (i < 8) mt[0].visibility = View.VISIBLE else mt[1].visibility = View.VISIBLE
+//                please(interpolator = DecelerateInterpolator()) {
+//                    animate(mt[i - 3]) toBe {
+//                        alpha(1f)
+//                    }
+//                }.start()
+            }
         }
 
         private var mt = mutableListOf<TextView>()
@@ -86,15 +84,14 @@ class SelectSignUPAd(val context: Context) : RecyclerView.Adapter<SelectSignUPAd
             }
         }
 
-
         init {
             constraintLayout {
-                lparams(DeviceInfo.data.mW - 180)
+                lparams(DeviceInfo.data.mW - 180, dip(65))
                 leftPadding = 90
 
                 val title = textView("Button") { id = R.id.TextID }.let { setT(it, 12, 0) }
-                mt.add(textView("D1出席") { id = View.generateViewId() }.let { setT(it) })
-                mt.add(textView("D2出席") { id = View.generateViewId() }.let { setT(it) })
+                mt.add(textView("Day1 出席") { id = View.generateViewId() }.let { setT(it) })
+                mt.add(textView("Day2 出席") { id = View.generateViewId() }.let { setT(it) })
 
                 mt.add(textView("上午") { id = View.generateViewId() }.let { setT(it) })
                 mt.add(textView("下午") { id = View.generateViewId() }.let { setT(it) })
@@ -108,55 +105,56 @@ class SelectSignUPAd(val context: Context) : RecyclerView.Adapter<SelectSignUPAd
                     title {
                         connect(
                                 TOP to TOP of PARENT_ID,
+                                BOTTOM to BOTTOM of PARENT_ID,
                                 START to START of PARENT_ID,
                                 BOTTOM to BOTTOM of PARENT_ID
                         )
                     }
                     mt[0]{
                         connect(
-                                TOP to TOP of PARENT_ID,
-                                END to START of mt[2] margin dip(5)
+                                TOP to TOP of PARENT_ID margin dip(15),
+                                END to START of mt[2] margin dip(3)
                         )
                     }
                     mt[2] {
                         connect(
-                                TOP to TOP of PARENT_ID,
-                                END to START of mt[3] margin dip(5)
+                                TOP to TOP of PARENT_ID margin dip(15),
+                                END to START of mt[3] margin dip(3)
                         )
                     }
                     mt[3] {
                         connect(
-                                TOP to TOP of PARENT_ID,
-                                END to START of mt[4] margin dip(5)
+                                TOP to TOP of PARENT_ID margin dip(15),
+                                END to START of mt[4] margin dip(3)
                         )
                     }
                     mt[4] {
                         connect(
-                                TOP to TOP of PARENT_ID,
+                                TOP to TOP of PARENT_ID margin dip(15),
                                 END to END of PARENT_ID
                         )
                     }
                     mt[1]{
                         connect(
-                                BOTTOM to BOTTOM of PARENT_ID,
-                                END to START of mt[5] margin dip(5)
+                                BOTTOM to BOTTOM of PARENT_ID margin dip(15),
+                                END to START of mt[5] margin dip(3)
                         )
                     }
                     mt[5] {
                         connect(
-                                BOTTOM to BOTTOM of PARENT_ID,
-                                END to START of mt[6] margin dip(5)
+                                BOTTOM to BOTTOM of PARENT_ID margin dip(15),
+                                END to START of mt[6] margin dip(3)
                         )
                     }
                     mt[6] {
                         connect(
-                                BOTTOM to BOTTOM of PARENT_ID,
-                                END to START of mt[7] margin dip(5)
+                                BOTTOM to BOTTOM of PARENT_ID margin dip(15),
+                                END to START of mt[7] margin dip(3)
                         )
                     }
                     mt[7] {
                         connect(
-                                BOTTOM to BOTTOM of PARENT_ID,
+                                BOTTOM to BOTTOM of PARENT_ID margin dip(15),
                                 END to END of PARENT_ID
                         )
                     }
