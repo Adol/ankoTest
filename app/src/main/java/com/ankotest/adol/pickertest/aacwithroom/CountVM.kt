@@ -25,7 +25,7 @@ class CountVM : ViewModel() {
     private lateinit var owner: Fragment
     private lateinit var countData: CountData
 
-    fun getCount(owner: Fragment, Fun: (CountData) -> Unit) {
+    fun showCount(owner: Fragment, Fun: (CountData) -> Unit) {
         this.owner = owner
         countData = CountData(mutableMapOf(), MutableList(4, {
             IntArray(10, { 0 })
@@ -40,14 +40,17 @@ class CountVM : ViewModel() {
                             countData.older.set(it.title, it.signUp[0])
                         }
                         countT(it)
-                        val data = MutableLiveData<CountData>()
-                        data.postValue(countData)
-                        data.observe(owner, Observer {
-//                            "getCount".pln()
-                            it!!.also(Fun)
-                        })
+                        showUI(Fun)
                     })
         }
+    }
+
+    private fun showUI(Fun: (CountData) -> Unit) {
+        val data = MutableLiveData<CountData>()
+        data.postValue(countData)
+        data.observe(owner, Observer {
+            it!!.also(Fun)
+        })
     }
 
     private fun countT(data: List<SignUpTable>) {

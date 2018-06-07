@@ -25,7 +25,7 @@ import org.jetbrains.anko.wrapContent
 
 class CountFragment : Fragment() {
     lateinit var title: String
-    private var notNull = false
+//    private var notNull = false
 
     private lateinit var vm: CountVM
     private lateinit var dataRecycle: RecyclerView
@@ -34,23 +34,24 @@ class CountFragment : Fragment() {
         "setUserVisibleHint".pln()
         if (isVisibleToUser) {
             val act = this
-            vm.getCount(act, {
+            vm.showCount(act, {
                 val countAdapter = CountAdapter()
                 dataRecycle.adapter = countAdapter
                 countAdapter.setIt(it)
             })
-        } else {
-            if (notNull) {
+        }
+//        else {
+//            if (notNull) {
 //                dataRecycle.removeAllViews()
 //                (dataRecycle.adapter as CountAdapter).resert()
-            }
-        }
+//            }
+//        }
         super.setUserVisibleHint(isVisibleToUser)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         vm = getViewModel(this)
-        notNull = true
+//        notNull = true
         return UI {
             constraintLayout {
                 val titleTV = textView(title) {

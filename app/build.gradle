@@ -45,7 +45,7 @@ android {
 }
 
 dependencies {
-    kapt "android.arch.persistence.room:compiler:1.0.0"
+    kapt "android.arch.persistence.room:compiler:1.1.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -61,14 +61,14 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:1.1.1"
     annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
 //  Room
-    implementation "android.arch.persistence.room:runtime:1.0.0"
-    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    implementation "android.arch.persistence.room:runtime:1.1.0"
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.0"
     // Paging
-    implementation "android.arch.paging:runtime:1.0.0-rc1"
+    implementation "android.arch.paging:runtime:1.0.0"
     // Test helpers for LiveData
     testImplementation "android.arch.core:core-testing:1.1.1"
     // Test helpers for Room
-    testImplementation "android.arch.persistence.room:testing:1.0.0"
+    testImplementation "android.arch.persistence.room:testing:1.1.0"
 //  Gson
     implementation 'com.google.code.gson:gson:2.8.2'
 //  RxAndroid
@@ -113,4 +113,8 @@ dependencies {
 
 //    // GridLayout-v7
 //    compile "org.jetbrains.anko:anko-gridlayout-v7:$anko_version"
+    //viewpage animation plug
+//    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.daimajia.slider:library:1.1.5@aar'
 }

@@ -14,6 +14,8 @@ import com.ankotest.adol.pickertest.api.EventVar
 import com.ankotest.adol.pickertest.api.viewClass
 import com.ankotest.adol.pickertest.model.SignUpRepository
 import com.ankotest.adol.pickertest.model.getUser
+import com.daimajia.slider.library.Transformers.DepthPageTransformer
+import com.nineoldandroids.view.ViewHelper
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
@@ -68,7 +70,10 @@ class AacUi(fragmentManager: FragmentManager) : AnkoComponent<AacActivity> {
     override fun createView(ui: AnkoContext<AacActivity>): View {
         launch(UI) {
             delay(100)
-            myViewpager.setPageTransformer(false, ::onTransform)
+//            myViewpager.setPageTransformer(false, ::onTransform)
+            myViewpager.setPageTransformer(false, {v,p->
+                onTransform(v,p)
+            })
         }
         return ui.apply {
             constraintLayout {
@@ -138,9 +143,39 @@ class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     }
 }
 
+var leftorright = ""
+var PB = false
+
+fun onTransform2(view: View, position: Float) {
+    DepthPageTransformer().transformPage(view,position)
+}
+
 fun onTransform(view: View, position: Float) {
-    view.scaleX = Math.max(0.9f, 1 - Math.abs(position))
-    view.scaleY = Math.max(0.9f, 1 - Math.abs(position))
+//    position.pln()
+    if (!PB) {
+        if ((position > 0) && (position < 1)) {
+            PB = true
+            leftorright = if (position < 0.5) "toRight" else "toLeft"
+//            leftorright.pln()
+        }
+    }
+    if ((-1 < position) && (position < 0)) {
+        ViewHelper.setTranslationX(view, (view.width * position * -0.7).toFloat())
+        when (leftorright) {
+            "toLeft" -> ViewHelper.setAlpha(view, (1 + position) * 2f)
+            "toRight" -> ViewHelper.setAlpha(view, 1 + position)
+        }
+    }
+    if ((0 < position) && (position < 1)) {
+//        position.pln()
+        when (leftorright) {
+            "toLeft" -> ViewHelper.setAlpha(view, 1f)
+            "toRight" -> ViewHelper.setAlpha(view, Math.max(0f, (0.8f - position) * 1.5f))
+        }
+    }
+    if (position == 0f) {
+        PB = false
+    }
 }
 
 

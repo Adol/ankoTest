@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.ankotest.adol.pickertest.api.pln
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout._ConstraintLayout
@@ -22,6 +23,7 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
     fun setIt(item: CountData) {
         countData = item
         itemSize = countData.older.size
+        itemSize.pln()
         notifyDataSetChanged()
     }
 

@@ -3,6 +3,7 @@ package com.ankotest.adol.pickertest.model
 import android.arch.lifecycle.MutableLiveData
 import android.arch.persistence.room.*
 import android.content.Context
+import com.ankotest.adol.pickertest.api.pln
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -62,6 +63,7 @@ class SignUpRepository(ctx: Context) {
     }
 
     fun getAll(): List<SignUpTable> {
+        Gson().toJson(mWordDao.getAll()).pln()
         return mWordDao.getAll()
     }
 

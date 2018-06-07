@@ -14,11 +14,9 @@ import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.support.v4.act
 
 class SignVM : ViewModel() {
-    private val db by lazy {
-        SignUpRepository(owner.act)
-    }
-
     private lateinit var owner: Fragment
+    private val db by lazy { SignUpRepository(owner.act) }
+
     private lateinit var dataUserSignUp: MutableLiveData<List<SignUpTable>>
 
     fun getData(owner: Fragment, type: String, Fun: (List<SignUpTable>) -> Unit) {
@@ -35,7 +33,6 @@ class SignVM : ViewModel() {
                             //it?.let { Fun(it) }
                         })
                     })
-//
         }
     }
 
