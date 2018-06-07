@@ -10,14 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ankotest.adol.pickertest.api.getViewModel
-import com.ankotest.adol.pickertest.api.pln
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
 import org.jetbrains.anko.constraint.layout.matchConstraint
 import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.recyclerview.v7.recyclerView
-import org.jetbrains.anko.sp
 import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.textView
@@ -31,7 +29,7 @@ class CountFragment : Fragment() {
     private lateinit var dataRecycle: RecyclerView
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        "setUserVisibleHint".pln()
+//        "setUserVisibleHint".pln()
         if (isVisibleToUser) {
             val act = this
             vm.showCount(act, {
@@ -56,7 +54,7 @@ class CountFragment : Fragment() {
             constraintLayout {
                 val titleTV = textView(title) {
                     id = View.generateViewId()
-                    textSize = sp(14).toFloat()
+                    textSize = 42f
                     gravity = Gravity.CENTER
                 }.lparams(matchParent, wrapContent)
 
@@ -84,6 +82,7 @@ class CountFragment : Fragment() {
                     }
                 }
             }
+            setUserVisibleHint(true)
         }.view
     }
 }

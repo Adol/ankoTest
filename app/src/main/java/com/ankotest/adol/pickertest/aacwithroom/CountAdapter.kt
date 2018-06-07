@@ -7,18 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.ankotest.adol.pickertest.api.pln
-import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout._ConstraintLayout
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.leftPadding
+import org.jetbrains.anko.matchParent
+import org.jetbrains.anko.textView
 
 class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
     private var itemSize: Int = 0
     private lateinit var countData: CountData
     //    private var hasChange :Boolean
     // Button Event ------------
-    private var thisWidth: Int = 0
 
     fun setIt(item: CountData) {
         countData = item
@@ -41,7 +43,8 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         //ankolayout 回傳 view
-        thisWidth = parent.layoutParams.width
+//        thisWidth = parent.layoutParams.width
+//        thisWidth.pln()
         //自訂View 建構方法
         val v = Information(parent.context)
         return ViewHolder(v)
@@ -75,13 +78,13 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
                 lparams(matchParent, dip(65))
                 showText = textView("body1") {
                     id = View.generateViewId()
-                    textSize = sp(9).toFloat()
+                    textSize = 24f
                 }.lparams {
                     leftPadding = dip(40)
                 }
                 showText2 = textView("body1") {
                     id = View.generateViewId()
-                    textSize = sp(9).toFloat()
+                    textSize = 22f
                 }.lparams {
                     leftMargin = dip(30)
                 }
@@ -92,16 +95,12 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
                         connect(
                                 TOP to TOP of PARENT_ID,
                                 START to START of PARENT_ID
-//                                BOTTOM to BOTTOM of PARENT_ID
-//                                END to END of PARENT_ID
                         )
                     }
                     showText2 {
                         connect(
                                 TOP to BOTTOM of showText,
                                 START to START of PARENT_ID
-//                                END to END of PARENT_ID
-//                                BOTTOM to BOTTOM of PARENT_ID
                         )
                     }
                 }

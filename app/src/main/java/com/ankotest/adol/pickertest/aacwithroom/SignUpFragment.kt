@@ -20,19 +20,16 @@ import com.github.florent37.kotlin.pleaseanimate.please
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
+import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout
 import org.jetbrains.anko.constraint.layout.matchConstraint
-import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.recyclerview.v7.coroutines.onChildAttachStateChangeListener
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.sdk25.coroutines.onClick
-import org.jetbrains.anko.sp
 import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.act
-import org.jetbrains.anko.textView
-import org.jetbrains.anko.wrapContent
 
 class SignUpFragment : Fragment() {
     lateinit var title: String
@@ -41,6 +38,7 @@ class SignUpFragment : Fragment() {
     private var itemNum = 0
 
     private lateinit var detailItem: RecyclerView
+    private lateinit var checkbg: View
 
     private fun setVm() {
         //VM取得db資料
@@ -78,9 +76,9 @@ class SignUpFragment : Fragment() {
         }.now()
 
         please(interpolator = Easing.Type(Easing.easeInOutSine)) {
-            //            animate(checkbg) toBe {
-//                alpha(0.7f)
-//            }
+            animate(checkbg) toBe {
+                alpha(0.7f)
+            }
             animate(detailItem) toBe {
                 alpha(1f)
                 textColor(Color.BLUE)
@@ -89,7 +87,7 @@ class SignUpFragment : Fragment() {
         }.start()
         launch(UI) {
             delay(100)
-            detailItem.adapter = UserCheckAdapter(listOf(data.name, data.name), data.userData, ::removeUI)
+            detailItem.adapter = UserCheckAdapter(listOf(data.name, data.name), data.course, ::removeUI)
         }
     }
 
@@ -97,10 +95,10 @@ class SignUpFragment : Fragment() {
         if (EventVar.hasChange) vm.upDate(itemNum)
         EventVar.fragmentTrans = true
         please(interpolator = DecelerateInterpolator()) {
-            //            animate(checkbg) toBe {
-//                alpha(0f)
-//                invisible()
-//            }
+            animate(checkbg) toBe {
+                alpha(0f)
+                invisible()
+            }
             animate(detailItem) toBe {
                 //                sameAlphaAs(checkbg)
                 alpha(0f)
@@ -120,7 +118,7 @@ class SignUpFragment : Fragment() {
             constraintLayout {
                 val titleTV = textView(title) {
                     id = View.generateViewId()
-                    textSize = sp(14).toFloat()
+                    textSize = 36f
                     gravity = Gravity.CENTER
                 }.lparams(matchParent, wrapContent)
 
@@ -129,12 +127,12 @@ class SignUpFragment : Fragment() {
                     layoutManager = LinearLayoutManager(act)
                 }.lparams(matchConstraint, matchConstraint)
 
-//                checkbg = view {
-//                    id = View.generateViewId()
-//                    backgroundColor = Color.BLACK
-//                    visibility = View.INVISIBLE
-//                    alpha = 0f
-//                }.lparams(0, 0)
+                checkbg = view {
+                    id = View.generateViewId()
+                    backgroundColor = Color.BLACK
+                    visibility = View.INVISIBLE
+                    alpha = 0f
+                }.lparams(0, 0)
 
                 detailItem = recyclerView {
                     id = View.generateViewId()
@@ -147,7 +145,7 @@ class SignUpFragment : Fragment() {
                 applyConstraintSet {
                     titleTV {
                         connect(
-                                TOP to TOP of PARENT_ID,
+                                TOP to TOP of PARENT_ID margin dip(5),
                                 START to START of PARENT_ID,
                                 END to END of PARENT_ID
                         )
@@ -160,14 +158,14 @@ class SignUpFragment : Fragment() {
                                 BOTTOM to BOTTOM of PARENT_ID
                         )
                     }
-//                    checkbg {
-//                        connect(
-//                                TOP to TOP of PARENT_ID,
-//                                START to START of PARENT_ID,
-//                                END to END of PARENT_ID,
-//                                BOTTOM to BOTTOM of PARENT_ID
-//                        )
-//                    }
+                    checkbg {
+                        connect(
+                                TOP to TOP of PARENT_ID,
+                                START to START of PARENT_ID,
+                                END to END of PARENT_ID,
+                                BOTTOM to BOTTOM of PARENT_ID
+                        )
+                    }
                     detailItem {
                         connect(
                                 TOP to TOP of PARENT_ID,

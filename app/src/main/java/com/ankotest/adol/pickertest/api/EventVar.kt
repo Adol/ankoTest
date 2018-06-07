@@ -10,7 +10,6 @@ class EventVar {
         const val Aac = 3
         const val Recycler = 4
         const val ID_Constraint = 5
-//        const val ViewpageID = 6
 
         var fragmentTrans = true
         var hasChange = true

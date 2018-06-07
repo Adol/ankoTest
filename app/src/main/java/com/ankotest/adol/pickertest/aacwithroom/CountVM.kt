@@ -36,8 +36,8 @@ class CountVM : ViewModel() {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
-                        it[0].userData.forEach {
-                            countData.older.set(it.title, it.signUp[0])
+                        it[0].course.forEach {
+                            countData.older.set(it.course, it.status[0])
                         }
                         countT(it)
                         showUI(Fun)
@@ -56,15 +56,15 @@ class CountVM : ViewModel() {
     private fun countT(data: List<SignUpTable>) {
         var ti = 0
         data.forEach {
-            when (listOf(it.Identity, it.sex)) {
+            when (listOf(it.identity, it.sex)) {
                 tm1 -> ti = 0
                 tm2 -> ti = 1
                 tm3 -> ti = 2
                 tm4 -> ti = 3
             }
 
-            it.userData.forEach {
-                if (it.signUp[1] == 2) countData.status[ti][it.signUp[0]]++
+            it.course.forEach {
+                if (it.status[1] == 2) countData.status[ti][it.status[0]]++
             }
         }
     }

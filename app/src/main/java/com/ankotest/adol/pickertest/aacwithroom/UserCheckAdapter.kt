@@ -2,6 +2,7 @@ package com.ankotest.adol.pickertest.aacwithroom
 
 import android.content.Context
 import android.support.constraint.ConstraintSet.PARENT_ID
+import android.support.constraint.ConstraintSet.VERTICAL
 import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.View
@@ -11,23 +12,19 @@ import android.widget.TextView
 import com.ankotest.adol.pickertest.R
 import com.ankotest.adol.pickertest.api.EventVar
 import com.ankotest.adol.pickertest.api.pln
-import com.ankotest.adol.pickertest.model.SignUpData
+import com.ankotest.adol.pickertest.model.courseSignUP
 import org.jetbrains.anko.*
+import org.jetbrains.anko.constraint.layout.*
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
-import org.jetbrains.anko.constraint.layout._ConstraintLayout
-import org.jetbrains.anko.constraint.layout.applyConstraintSet
-import org.jetbrains.anko.constraint.layout.constraintLayout
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
-class UserCheckAdapter(private var userInfo: List<String>, private var data: List<SignUpData>, private var callBack: () -> Unit) : RecyclerView.Adapter<UserCheckAdapter.ViewHolder>() {
+class UserCheckAdapter(private var userInfo: List<String>, private var data: List<courseSignUP>, private var callBack: () -> Unit) : RecyclerView.Adapter<UserCheckAdapter.ViewHolder>() {
     val mealButton = listOf(R.drawable.meal_button_1, R.drawable.meal_button_2, R.drawable.meal_button_3)
     val studyButton = listOf(R.drawable.study_button_1, R.drawable.study_button_2, R.drawable.study_button_3)
 
     private var itemSize: Int
-    //    private var hasChange :Boolean
-    //原本資料 -> 取消於回復原狀用
-    private var oldStatus: Array<Int> = arrayOf()
+    private var oldStatus = mutableListOf<Int>()
 
     init {
 //        "init".pln()
@@ -35,8 +32,7 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
         itemSize = data.size
         //取得原本資料
         data.forEach {
-            it.title.pln()
-            oldStatus += arrayOf(it.signUp[1])
+            oldStatus.add(it.status[1]) //+= arrayOf(it.status[1])
         }
     }
 
@@ -45,7 +41,7 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
         bg {
             EventVar.hasChange = false
             for (i in oldStatus.indices) {
-                data[i].signUp[1] = oldStatus[i]
+                data[i].status[1] = oldStatus[i]
             }
         }
         goBack()
@@ -55,8 +51,8 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
         bg {
             if (EventVar.hasChange) {
                 for (i in data.indices) {
-                    if (data[i].signUp[1] != oldStatus[i]) {
-                        data[i].title.pln()
+                    if (data[i].status[1] != oldStatus[i]) {
+                        data[i].course.pln()
                     }
                 }
             }
@@ -93,7 +89,7 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (position) {
-            0 -> holder.itemView.find<TextView>(TextID).text = getTitle(userInfo[0].plus("  "), userInfo[1], "月廣培報到")
+            0 -> holder.itemView.find<TextView>(R.id.TextID).text = getTitle(userInfo[0].plus("  "), userInfo[1], "月廣培報到")
             itemCount - 1 -> {
             }
             else -> (holder.itemView as ButtonBody).apply {
@@ -110,12 +106,13 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
     private fun headOB(ui: AnkoContext<UserCheckAdapter>): View {
         return ui.apply {
             linearLayout {
-                lparams(matchParent, dip(55))
+                lparams(matchParent, dip(60))
                 gravity = Gravity.CENTER
                 textView("Head") {
-                    id = TextID
-                    textSize = sp(9).toFloat()
-                }.lparams(wrapContent)
+                    id = R.id.TextID
+                    textSize = 26f
+                    gravity = Gravity.CENTER
+                }
             }
         }.view
     }
@@ -127,67 +124,68 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
 
         private var itemNum = 0
         private val type by lazy {
-            data[itemNum].signUp[0]
+            data[itemNum].status[0]
         }
 
         fun setItem(No: Int) {
             itemNum = No
-            showText.text = data[itemNum].title//keys[itemNum]
+            showText.text = data[itemNum].course//keys[itemNum]
             setImage(type)
         }
 
         private fun setImage(I: Int) {
             when (I) {
-                in 0..4 -> showButton.setImageResource(mealButton[data[itemNum].signUp[1]])
-                in 5..9 -> showButton.setImageResource(studyButton[data[itemNum].signUp[1]])
+                in 0..4 -> showButton.setImageResource(mealButton[data[itemNum].status[1]])
+                in 5..9 -> showButton.setImageResource(studyButton[data[itemNum].status[1]])
             }
         }
 
         init {
             constraintLayout {
-                lparams(thisWidth, dip(55))
+                lparams(thisWidth,dip(50))
                 onClick {
-                    when (data[itemNum].signUp[1]) {
-                        2 -> data[itemNum].signUp[1] = 0
-                        0 -> data[itemNum].signUp[1] = 2
+                    when (data[itemNum].status[1]) {
+                        2 -> data[itemNum].status[1] = 0
+                        0 -> data[itemNum].status[1] = 2
                     }
                     setImage(type)
                 }
 
-                val gap = view {
+                val guide = guideline {
                     id = View.generateViewId()
-                    visibility = View.INVISIBLE
-                }.lparams(90, 1)
-
-                showText = textView("body1") {
-                    id = TextID
-                    textSize = sp(9).toFloat()
+                }.lparams(width=20,height = matchConstraint) {
+                    orientation = VERTICAL
+                    leftPadding = 200
                 }
 
                 showButton = imageView {
                     id = View.generateViewId()
                 }.lparams(dip(36), dip(36))
 
+                showText = textView("body1") {
+                    id = View.generateViewId()
+                    textSize = 26f
+                }
+
+
                 applyConstraintSet {
-                    gap {
+                    guide {
                         connect(
                                 TOP to TOP of PARENT_ID,
-                                BOTTOM to BOTTOM of PARENT_ID,
                                 START to START of PARENT_ID
                         )
                     }
                     showButton {
                         connect(
                                 TOP to TOP of PARENT_ID,
-                                START to END of gap,
+                                START to END of guide,
                                 BOTTOM to BOTTOM of PARENT_ID
                         )
                     }
                     showText {
                         connect(
                                 TOP to TOP of PARENT_ID,
-                                START to START of gap,
-                                END to END of PARENT_ID,
+                                START to END of showButton margin dip(15) ,
                                 BOTTOM to BOTTOM of PARENT_ID
                         )
                     }
@@ -199,38 +197,26 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
     private fun endOB(ui: AnkoContext<UserCheckAdapter>): View {
         return ui.apply {
             linearLayout {
-                lparams(matchParent, dip(55))
+                lparams(matchParent, dip(35))
                 gravity = Gravity.CENTER
 
                 textView("確認") {
-                    id = TextID
-                    textSize = sp(9).toFloat()
+                    id = View.generateViewId()
+                    textSize = 26f
                     onClick {
                         goBack()
                     }
                 }
                 textView(" / ") {
-                    textSize = sp(7).toFloat()
+                    textSize =20f
                 }
                 textView("取消") {
-                    textSize = sp(9).toFloat()
+                    textSize = 26f
                     onClick {
                         cancel()
                     }
                 }
-                applyRecursively {
-                    when (it) {
-                        is TextView -> {
-                            it.textSize = sp(9).toFloat()
-                        }
-                    }
-
-                }
             }
         }.view
-    }
-
-    companion object {
-        const val TextID = 0
     }
 }

@@ -19,7 +19,6 @@ class DeviceInfo {
                     ui.resources.displayMetrics.heightPixels,
                     ui.resources.displayMetrics.density,
                     ui.resources.displayMetrics.densityDpi)
-
         }
     }
 }
