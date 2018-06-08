@@ -27,7 +27,6 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
     private var oldStatus = mutableListOf<Int>()
 
     init {
-//        "init".pln()
         EventVar.hasChange = true
         itemSize = data.size
         //取得原本資料
@@ -48,15 +47,15 @@ class UserCheckAdapter(private var userInfo: List<String>, private var data: Lis
     }
 
     private fun goBack() {
-        bg {
-            if (EventVar.hasChange) {
-                for (i in data.indices) {
-                    if (data[i].status[1] != oldStatus[i]) {
-                        data[i].course.pln()
-                    }
-                }
-            }
-        }
+//        bg {
+//            if (EventVar.hasChange) {
+//                for (i in data.indices) {
+//                    if (data[i].status[1] != oldStatus[i]) {
+//                        data[i].course.pln()
+//                    }
+//                }
+//            }
+//        }
         //清 物件
         itemSize = 0
         //回傳

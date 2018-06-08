@@ -40,8 +40,9 @@ class SignUpFragment : Fragment() {
     private lateinit var detailItem: RecyclerView
     private lateinit var checkbg: View
 
-    private fun setVm() {
+    fun setVm() {
         //VM取得db資料
+        setItem()
         vm = getViewModel(this)
         vm.getData(this, type = title, Fun = {
             val selectItmeadapter = SelectSignUPAd()
@@ -112,7 +113,6 @@ class SignUpFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         launch(UI) {
             setVm()
-            setItem()
         }
         return UI {
             constraintLayout {

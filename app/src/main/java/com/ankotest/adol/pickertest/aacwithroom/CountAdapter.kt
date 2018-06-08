@@ -25,7 +25,7 @@ class CountAdapter : RecyclerView.Adapter<CountAdapter.ViewHolder>() {
     fun setIt(item: CountData) {
         countData = item
         itemSize = countData.older.size
-        itemSize.pln()
+//        itemSize.pln()
         notifyDataSetChanged()
     }
 

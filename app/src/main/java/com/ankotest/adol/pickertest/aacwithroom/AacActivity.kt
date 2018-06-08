@@ -11,15 +11,16 @@ import android.view.MotionEvent
 import android.view.View
 import com.ankotest.adol.pickertest.api.DeviceInfo
 import com.ankotest.adol.pickertest.api.EventVar
-import com.ankotest.adol.pickertest.api.pln
 import com.ankotest.adol.pickertest.api.viewClass
 import com.ankotest.adol.pickertest.model.SignUpRepository
 import com.ankotest.adol.pickertest.model.SignUpTable
-import com.ankotest.adol.pickertest.model.getUser
 import com.daimajia.slider.library.Transformers.DepthPageTransformer
+import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.nineoldandroids.view.ViewHelper
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
@@ -32,70 +33,43 @@ import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.setContentView
 import org.jetbrains.anko.support.v4._ViewPager
-import java.io.InputStream
 
 /**
  **Created by adol on 2018/3/19.
  */
 class AacActivity : AppCompatActivity() {
     private lateinit var db: SignUpRepository
+    private var baseUi = AacUi(supportFragmentManager)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        db = SignUpRepository(ctx)
         super.onCreate(savedInstanceState)
         DeviceInfo.getInfo(this)
-//        getJSON()
-        //read File
-        db = SignUpRepository(ctx)
-        bg {
-//                        db.deleteAll()
-            if (db.getAll().size > 0) {
-                "DDDDD".pln()
-                AacUi(supportFragmentManager).setContentView(this)
-            } else {
-                "pppppp".pln()
-                getJsonTxt()
-            }
-        }
-    }
-
-    private fun getJsonTxt() {
-        val inputStream: InputStream = applicationContext.assets.open("json2.txt")
-        val inputString = inputStream.bufferedReader().use { it.readText() }
-        //json to List
-        val type = object : TypeToken<List<SignUpTable>>() {}.type
-        val dd = Gson().fromJson<List<SignUpTable>>(inputString, type)
-        bg {
-            "getJsonTxt".pln()
-            dd.forEach {
-                db.insert(it)
-            }
-            AacUi(supportFragmentManager).setContentView(this)
-        }
-    }
-
-    private fun getJSON() {
-        db = SignUpRepository(ctx)
+        baseUi.setContentView(this)
         bg {
             db.deleteAll()
-            db.insert(getUser("張建鴻", "幹部", "man"))
-            db.insert(getUser("張建鴻", "幹部", "man"))
-//            db.insert(getUser("AD2", "幹部", "man"))
-            db.insert(getUser("ADA", "幹部", "woman"))
-            db.insert(getUser("ADA1", "幹部", "woman"))
-//            db.insert(getUser("ADA2", "幹部", "woman"))
-
-            db.insert(getUser("ad", "學員", "man"))
-            db.insert(getUser("ad1", "學員", "man"))
-//            db.insert(getUser("ad2", "學員", "man"))
-            db.insert(getUser("ada", "學員", "woman"))
-            db.insert(getUser("ada1", "學員", "woman"))
-//            db.insert(getUser("ada2", "學員", "woman"))
+            if (db.getAll().size < 1) {
+                //read File
+                val inputStream = applicationContext.assets.open("json2.txt")
+                val inputString = inputStream.bufferedReader().use { it.readText() }
+                //json to List
+                val type = object : TypeToken<List<SignUpTable>>() {}.type
+                val foJson = Gson().fromJson<List<SignUpTable>>(inputString, type)
+                bg {
+                    Flowable.just(foJson.forEach { db.insert(it) })
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                baseUi.viewpagerFm.show()
+                            })
+                }
+            }
         }
     }
 }
 
 class AacUi(fragmentManager: FragmentManager) : AnkoComponent<AacActivity> {
-    private val viewpagerFm: ViewpagerFm = ViewpagerFm(fragmentManager)
+    val viewpagerFm: ViewpagerFm = ViewpagerFm(fragmentManager)
     private lateinit var myViewpager: ViewClass
 
     override fun createView(ui: AnkoContext<AacActivity>): View {
@@ -138,8 +112,12 @@ class ViewClass(ctx: Context) : _ViewPager(ctx) {
 }
 
 class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
-    //    private lateinit var tempFrag: SignUpFragment
     private val fragments = linkedMapOf<String, Fragment>()
+
+    fun show() {
+        (fragments["幹部"] as SignUpFragment).setVm()
+        (fragments["學員"] as SignUpFragment).setVm()
+    }
 
     init {
         fragments["幹部"] = SignUpFragment()
@@ -174,13 +152,12 @@ class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     }
 }
 
-var leftorright = ""
-var PB = false
-
 fun onTransform2(view: View, position: Float) {
     DepthPageTransformer().transformPage(view, position)
 }
 
+var leftorright = ""
+var PB = false
 fun onTransform(view: View, position: Float) {
 //    position.pln()
     if (position == 0f) {
@@ -209,7 +186,4 @@ fun onTransform(view: View, position: Float) {
             "toRight" -> ViewHelper.setAlpha(view, Math.max(0f, (0.8f - position) * 1.5f))
         }
     }
-
 }
-
-
