@@ -4,7 +4,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.support.v4.app.Fragment
-import com.ankotest.adol.pickertest.api.pln
 import com.ankotest.adol.pickertest.model.SignUpRepository
 import com.ankotest.adol.pickertest.model.SignUpTable
 import io.reactivex.Flowable
@@ -19,20 +18,18 @@ class SignVM : ViewModel() {
 
     private lateinit var dataUserSignUp: MutableLiveData<List<SignUpTable>>
 
-    fun getData(owner: Fragment, type: String, Fun: (List<SignUpTable>) -> Unit) {
+    fun getData(owner: Fragment, identity: String, Fun: (List<SignUpTable>) -> Unit) {
         this.owner = owner
         bg {
-            Flowable.just(db.getSignUp(type))
+            Flowable.just(db.getSignUp(identity = identity,mt=6))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
+                    .subscribe{
                         dataUserSignUp = it
                         dataUserSignUp.observe(owner, Observer {
-                            "change".pln()
                             it!!.also(Fun)
-                            //it?.let { Fun(it) }
                         })
-                    })
+                    }
         }
     }
 

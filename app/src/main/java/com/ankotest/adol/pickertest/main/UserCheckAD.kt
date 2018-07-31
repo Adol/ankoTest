@@ -15,7 +15,6 @@ import com.ankotest.adol.pickertest.model.courseSignUP
 import org.jetbrains.anko.*
 import org.jetbrains.anko.constraint.layout.*
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
-import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class UserCheckAD(private var userInfo: List<String>, private var data: List<courseSignUP>, private var callBack: () -> Unit) : RecyclerView.Adapter<UserCheckAD.ViewHolder>() {
@@ -26,7 +25,7 @@ class UserCheckAD(private var userInfo: List<String>, private var data: List<cou
     private var oldStatus = mutableListOf<Int>()
 
     init {
-        EventVar.hasChange = true
+        EventVar.hasChange = false
         itemSize = data.size
         //取得原本資料
         data.forEach {
@@ -36,29 +35,19 @@ class UserCheckAD(private var userInfo: List<String>, private var data: List<cou
 
     // Button Event ------------
     private fun cancel() {
-        bg {
-            EventVar.hasChange = false
-            for (i in oldStatus.indices) {
-                data[i].status[1] = oldStatus[i]
-            }
+        //清VM data
+        for (i in oldStatus.indices) {
+            data[i].status[1] = oldStatus[i]
         }
         goBack()
     }
 
     private fun goBack() {
-//        bg {
-//            if (EventVar.hasChange) {
-//                for (i in data.indices) {
-//                    if (data[i].status[1] != oldStatus[i]) {
-//                        data[i].course.pln()
-//                    }
-//                }
-//            }
-//        }
         //清 物件
         itemSize = 0
         //回傳
         callBack()
+        EventVar.fragmentTrans = true
     }
 
     //Override -----------------------
@@ -132,7 +121,7 @@ class UserCheckAD(private var userInfo: List<String>, private var data: List<cou
             setImage(type)
         }
 
-        fun clickMove(){
+        fun clickMove() {
             data[itemID].status[1] = 2
             setImage(type)
         }
@@ -208,6 +197,7 @@ class UserCheckAD(private var userInfo: List<String>, private var data: List<cou
                     id = View.generateViewId()
                     textSize = 26f
                     onClick {
+                        EventVar.hasChange = true
                         goBack()
                     }
                 }

@@ -33,7 +33,7 @@ class CountFragment : Fragment() {
         "setUserVisibleHint".pln()
         if (isVisibleToUser) {
             val act = this
-            vm.showCount(act, {
+            vm.showCount(act, Fun = {
                 val countAdapter = CountAdapter()
                 dataRecycle.adapter = countAdapter
                 countAdapter.setIt(it)
@@ -63,7 +63,7 @@ class CountFragment : Fragment() {
                     id = View.generateViewId()
                     layoutManager = LinearLayoutManager(act)
                     //必須 BOTTOM to BOTTOM of PARENT_ID
-                }.lparams(matchConstraint,matchConstraint)
+                }.lparams(matchConstraint, matchConstraint)
 
                 applyConstraintSet {
                     titleTV {

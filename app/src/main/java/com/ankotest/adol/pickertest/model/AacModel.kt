@@ -7,11 +7,10 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 
-//data class courseSignUP(val data:List<Data>){
 data class courseSignUP(val course: String, val status: MutableList<Int>)
-//}
-/*Array [a,b,c]
- a - 按鈕類型  0 ~ 4 用餐 5 ~ 9 上課
+/*status  MutableList<Int> ->
+ [a,b,c]
+ a - 按鈕類型  0 ~ 99 上課  101 ~ 用餐
  b - 確認
  //c - 預先報名狀況暫停
 */
@@ -37,11 +36,14 @@ interface SignUpDao {
     @Update
     fun upDateSign(up: SignUpTable)
 
-    @Query("select * from SignUpTable where month = :mt")
-    fun getAll(mt: Int = 4): List<SignUpTable>
+    @Query("select * from SignUpTable where identity = :identity AND month = :mt")
+    fun getSignUp(identity: String,mt: Int): List<SignUpTable>
 
-    @Query("select * from SignUpTable where identity = :identity")
-    fun getSignUp(identity: String): List<SignUpTable>
+    @Query("select * from SignUpTable where month = :mt")
+    fun getAll(mt: Int): List<SignUpTable>
+
+//    @Query("select * from SignUpTable ")
+//    fun getTotal(mt: Int): List<SignUpTable>
 
     @Query("DELETE FROM SignUpTable")
     fun deleteAll()
@@ -55,17 +57,6 @@ class SignUpRepository(ctx: Context) {
         mWordDao = db!!.signUpDao()
     }
 
-    fun getSignUp(type: String): MutableLiveData<List<SignUpTable>> {
-        val data = MutableLiveData<List<SignUpTable>>()
-        data.postValue(mWordDao.getSignUp(type))
-        return data
-    }
-
-    fun getAll(mt:Int = 4): List<SignUpTable> {
-//        Gson().toJson(mWordDao.getAll()).pln()
-        return mWordDao.getAll(mt)
-    }
-
     fun insert(signUp: SignUpTable) {
         mWordDao.insertOne(signUp)
     }
@@ -74,9 +65,20 @@ class SignUpRepository(ctx: Context) {
         mWordDao.upDateSign(signUp)
     }
 
-    fun deleteAll() {
-        mWordDao.deleteAll()
+    fun getSignUp(identity: String, mt: Int = 4 ): MutableLiveData<List<SignUpTable>> {
+        val data = MutableLiveData<List<SignUpTable>>()
+        data.postValue(mWordDao.getSignUp(identity,mt))
+        return data
     }
+
+    fun getAll(mt: Int ): List<SignUpTable> {
+        return mWordDao.getAll(mt)
+//        Gson().toJson(mWordDao.getAll()).pln()
+    }
+
+//    fun deleteAll() {
+//        mWordDao.deleteAll()
+//    }
 }
 
 class DataConverter {
@@ -84,8 +86,6 @@ class DataConverter {
 
     @TypeConverter
     fun toJson(courseSignUP: List<courseSignUP>): String {
-//        "toJson".pln()
-//        gson.toJson(courseSignUP).pln()
         return gson.toJson(courseSignUP)
     }
 
@@ -109,10 +109,9 @@ abstract class AppDataBase : RoomDatabase() {
         internal fun getInstance(context: Context): AppDataBase? {
             // synchronized 鎖定物件
             INSTANCE ?: synchronized(this) {
-                INSTANCE
-                        ?: buildDatabase(context).also {
-                            INSTANCE = it
-                        }
+                INSTANCE ?: buildDatabase(context).also {
+                    INSTANCE = it
+                }
             }
             return INSTANCE
         }
@@ -124,6 +123,7 @@ abstract class AppDataBase : RoomDatabase() {
                     .build()
         }
     }
+    //修改資料庫版本
 //val MIGRATION_1_2: Migration = object : Migration(1, 2) {
 //
 //    override fun migrate(database: SupportSQLiteDatabase) {

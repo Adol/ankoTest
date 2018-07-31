@@ -11,19 +11,15 @@ import android.view.MotionEvent
 import android.view.View
 import com.ankotest.adol.pickertest.api.DeviceInfo
 import com.ankotest.adol.pickertest.api.EventVar
+import com.ankotest.adol.pickertest.api.TransFormSP.Companion.onTransform
 import com.ankotest.adol.pickertest.api.viewClass
 import com.ankotest.adol.pickertest.model.SignUpRepository
 import com.ankotest.adol.pickertest.model.SignUpTable
-import com.daimajia.slider.library.Transformers.DepthPageTransformer
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.nineoldandroids.view.ViewHelper
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
@@ -37,50 +33,38 @@ import org.jetbrains.anko.support.v4._ViewPager
 /**
  **Created by adol on 2018/3/19.
  */
+
 class AacActivity : AppCompatActivity() {
-    private lateinit var db: SignUpRepository
     private var baseUi = AacUi(supportFragmentManager)
+    private lateinit var db: SignUpRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        db = SignUpRepository(ctx)
         super.onCreate(savedInstanceState)
         DeviceInfo.getInfo(this)
+        db = SignUpRepository(ctx)
         baseUi.setContentView(this)
+//        dete()
         bg {
-//            db.deleteAll()
-//            getJSON()
-            if (db.getAll().size < 1) {
+            if (db.getAll(4).isEmpty()) {
                 //read File
                 val inputStream = assets.open("json2.txt")
                 val inputString = inputStream.bufferedReader().use { it.readText() }
                 //json to List
                 val type = object : TypeToken<List<SignUpTable>>() {}.type
                 val foJson = Gson().fromJson<List<SignUpTable>>(inputString, type)
-                bg {
-                    Flowable.just(foJson.forEach { db.insert(it) })
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({
-                                baseUi.viewpagerFm.show()
-                            })
-                }
+                Flowable.just(foJson.forEach { db.insert(it) })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe {
+                            baseUi.viewpagerFm.show()
+                        }
             }
         }
-    }
 
-//    private fun getJSON() {
-//        db = SignUpRepository(ctx)
+    }
+//    fun dete() {
 //        bg {
 //            db.deleteAll()
-//            db.insert(getUser("AD", "幹部", "man"))
-//            db.insert(getUser("AD1", "幹部", "man"))
-//            db.insert(getUser("ADA", "幹部", "woman"))
-//            db.insert(getUser("ADA1", "幹部", "woman"))
-//
-//            db.insert(getUser("ad", "學員", "man"))
-//            db.insert(getUser("ad1", "學員", "man"))
-//            db.insert(getUser("ada", "學員", "woman"))
-//            db.insert(getUser("ada1", "學員", "woman"))
 //        }
 //    }
 }
@@ -90,19 +74,13 @@ class AacUi(fragmentManager: FragmentManager) : AnkoComponent<AacActivity> {
     private lateinit var myViewpager: ViewClass
 
     override fun createView(ui: AnkoContext<AacActivity>): View {
-        launch(UI) {
-            delay(100)
-            myViewpager.setPageTransformer(false, ::onTransform)
-//            myViewpager.setPageTransformer(false, { v, p ->
-//                onTransform(v, p)
-//            })
-        }
-        return ui.apply {
+        ui.apply {
             constraintLayout {
                 myViewpager = viewClass {
                     id = View.generateViewId()
                     adapter = viewpagerFm
                 }.lparams(0, 0)
+
 
                 applyConstraintSet {
                     myViewpager {
@@ -115,7 +93,9 @@ class AacUi(fragmentManager: FragmentManager) : AnkoComponent<AacActivity> {
                     }
                 }
             }
-        }.view
+        }
+        myViewpager.setPageTransformer(false, ::onTransform)
+        return ui.view
     }
 }
 
@@ -131,16 +111,17 @@ class ViewClass(ctx: Context) : _ViewPager(ctx) {
 class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     private val fragments = linkedMapOf<String, Fragment>()
 
-    fun show() {
-        (fragments["幹部"] as SignUpFragment).setVm()
-        (fragments["學員"] as SignUpFragment).setVm()
-    }
-
     init {
         fragments["幹部"] = SignUpFragment()
         fragments["學員"] = SignUpFragment()
         fragments["回報"] = CountFragment()
     }
+
+    fun show() {
+        (fragments["幹部"] as SignUpFragment).setVm()
+        (fragments["學員"] as SignUpFragment).setVm()
+    }
+
 
 //    override fun getItemPosition(ob: Any): Int {
 //        "getItemPosition".pln()
@@ -166,41 +147,5 @@ class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
     override fun getCount(): Int {
         return fragments.size
-    }
-}
-
-fun onTransform2(view: View, position: Float) {
-    DepthPageTransformer().transformPage(view, position)
-}
-
-var leftorright = ""
-var PB = false
-fun onTransform(view: View, position: Float) {
-//    position.pln()
-    if (position == 0f) {
-        PB = false
-    }
-
-    if (!PB) {
-        if (position > 0 && position < 1) {
-            PB = true
-            leftorright = if (position < 0.5) "toRight" else "toLeft"
-//            leftorright.pln()
-        }
-    }
-
-    if (-1 < position && position < 0) {
-        ViewHelper.setTranslationX(view, (view.width * position * -0.7).toFloat())
-        when (leftorright) {
-            "toLeft" -> ViewHelper.setAlpha(view, (1 + position) * 2f)
-            "toRight" -> ViewHelper.setAlpha(view, 1 + position)
-        }
-    }
-
-    if (0 < position && position < 1) {
-        when (leftorright) {
-            "toLeft" -> ViewHelper.setAlpha(view, 1f)
-            "toRight" -> ViewHelper.setAlpha(view, Math.max(0f, (0.8f - position) * 1.5f))
-        }
     }
 }

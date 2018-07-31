@@ -42,7 +42,7 @@ class SignUpFragment : Fragment() {
         //VM取得db資料
         setItem()
         vm = getViewModel(this)
-        vm.getData(this, type = title, Fun = {
+        vm.getData(this, identity  = title, Fun = {
             val selectItmeadapter = SelectSignUPAd()
             showUser.adapter = selectItmeadapter
             selectItmeadapter.setIt(it)
@@ -51,25 +51,10 @@ class SignUpFragment : Fragment() {
 
     private fun setItem() {
         showUser.apply {
-//                        onItemTouchListener {
-//                onInterceptTouchEvent { rec, me ->
-//                    when (me?.action) {
-//                        MotionEvent.ACTION_UP -> {
-//                            rec!!.findChildViewUnder(100f, me.y-dip(40) -25).let {
-//                                when (it){
-//                                    is SelectSignUPAd.Information -> vm.setClick(it.vhID, ::showSelectUI)
-//                                }
-//                            }
-//                        }
-//                    }
-//                    true
-//                }
-//            }
             //adapter 加入畫面時
             onChildAttachStateChangeListener {
                 //                顯示到視窗時
                 onChildViewAttachedToWindow {
-                    //it -> view? ->!!.
                     it!!.onClick {
                         childPosition = getChildAdapterPosition(it)
                         // getChildAdapterPosition(it) -> view的編號
@@ -79,13 +64,12 @@ class SignUpFragment : Fragment() {
             }
         }
         userCheckAD.apply {
+            val mGestureDetector = GestureDetector(act, UserCheckGestureSimple())
             onItemTouchListener {
                 onInterceptTouchEvent { rec, me ->
-                    when (me?.action) {
-                        MotionEvent.ACTION_MOVE -> {
-                            rec!!.findChildViewUnder(30f, me.y - 25).let {
-                                (it as? UserCheckAD.ButtonBody)?.clickMove()
-                            }
+                    if (mGestureDetector.onTouchEvent((me))) {
+                        rec!!.findChildViewUnder(30f, me!!.y - 50).let {
+                            (it as? UserCheckAD.ButtonBody)?.clickMove()
                         }
                     }
                     true
@@ -114,15 +98,12 @@ class SignUpFragment : Fragment() {
         }.start()
         launch(UI) {
             delay(100)
-            userCheckAD.adapter = UserCheckAD(listOf(data.name, data.month.toString()), data.course, ::removeUI)
+            userCheckAD.adapter = UserCheckAD(listOf(data.name, data.month.toString()), data.course, ::showsignUpUi)
         }
     }
 
-    private fun removeUI() {
-        if (EventVar.hasChange) {
-            vm.upDate(childPosition)
-            EventVar.fragmentTrans = true
-        }
+    private fun showsignUpUi() {
+        if (EventVar.hasChange) vm.upDate(childPosition)
 
         please(interpolator = DecelerateInterpolator()) {
             animate(checkbg) toBe {
@@ -141,6 +122,7 @@ class SignUpFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         launch(UI) {
+            delay(1000)
             setVm()
         }
         return UI {
@@ -169,7 +151,6 @@ class SignUpFragment : Fragment() {
                     layoutManager = LinearLayoutManager(act)
                     visibility = View.INVISIBLE
                     alpha = 0f
-//                }.lparams(0, 0)
                 }.lparams(0, 0)
 
                 applyConstraintSet {
@@ -211,4 +192,3 @@ class SignUpFragment : Fragment() {
         }.view
     }
 }
-

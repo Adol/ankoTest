@@ -27,21 +27,21 @@ class CountVM : ViewModel() {
 
     fun showCount(owner: Fragment, Fun: (CountData) -> Unit) {
         this.owner = owner
-        countData = CountData(mutableMapOf(), MutableList(4, {
-            IntArray(10, { 0 })
+        countData = CountData(mutableMapOf(), MutableList(4, init = {
+            IntArray(10, init = { 0 })
         }))
 
         bg {
-            Flowable.just(db.getAll())
+            Flowable.just(db.getAll(4))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
+                    .subscribe {
                         it[0].course.forEach {
                             countData.older.set(it.course, it.status[0])
                         }
                         countT(it)
                         showUI(Fun)
-                    })
+                    }
         }
     }
 
@@ -54,17 +54,17 @@ class CountVM : ViewModel() {
     }
 
     private fun countT(data: List<SignUpTable>) {
-        var ti = 0
+        var type = 0
         data.forEach {
             when (listOf(it.identity, it.sex)) {
-                tm1 -> ti = 0
-                tm2 -> ti = 1
-                tm3 -> ti = 2
-                tm4 -> ti = 3
+                tm1 -> type = 0
+                tm2 -> type = 1
+                tm3 -> type = 2
+                tm4 -> type = 3
             }
 
             it.course.forEach {
-                if (it.status[1] == 2) countData.status[ti][it.status[0]]++
+                if (it.status[1] == 2) countData.status[type][it.status[0]]++
             }
         }
     }
