@@ -125,11 +125,9 @@ abstract class AppDataBase : RoomDatabase() {
     }
     //修改資料庫版本
 //val MIGRATION_1_2: Migration = object : Migration(1, 2) {
-//
 //    override fun migrate(database: SupportSQLiteDatabase) {
 //        database.execSQL("CREATE TABLE `Fruit` (`id` INTEGER, "
 //                + "`name` TEXT, PRIMARY KEY(`id`))")
-//
 //    }
 //
 //}
