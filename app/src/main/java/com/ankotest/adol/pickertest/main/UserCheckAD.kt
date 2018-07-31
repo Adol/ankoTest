@@ -17,7 +17,9 @@ import org.jetbrains.anko.constraint.layout.*
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
-class UserCheckAD(private var userInfo: List<String>, private var data: List<courseSignUP>, private var callBack: () -> Unit) : RecyclerView.Adapter<UserCheckAD.ViewHolder>() {
+class UserCheckAD(private var userInfo: List<String>,
+                  private var data: List<courseSignUP>,
+                  private var callBack: () -> Unit) : RecyclerView.Adapter<UserCheckAD.ViewHolder>() {
     val mealButton = listOf(R.drawable.meal_button_1, R.drawable.meal_button_2, R.drawable.meal_button_3)
     val studyButton = listOf(R.drawable.study_button_1, R.drawable.study_button_2, R.drawable.study_button_3)
 

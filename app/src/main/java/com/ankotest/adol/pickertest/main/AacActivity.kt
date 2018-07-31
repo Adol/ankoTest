@@ -1,17 +1,15 @@
 package com.ankotest.adol.pickertest.main
 
-import android.content.Context
 import android.os.Bundle
 import android.support.constraint.ConstraintSet.PARENT_ID
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v7.app.AppCompatActivity
-import android.view.MotionEvent
 import android.view.View
 import com.ankotest.adol.pickertest.api.DeviceInfo
-import com.ankotest.adol.pickertest.api.EventVar
 import com.ankotest.adol.pickertest.api.TransFormSP.Companion.onTransform
+import com.ankotest.adol.pickertest.api.ViewClass
 import com.ankotest.adol.pickertest.api.viewClass
 import com.ankotest.adol.pickertest.model.SignUpRepository
 import com.ankotest.adol.pickertest.model.SignUpTable
@@ -28,7 +26,6 @@ import org.jetbrains.anko.constraint.layout.constraintLayout
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.setContentView
-import org.jetbrains.anko.support.v4._ViewPager
 
 /**
  **Created by adol on 2018/3/19.
@@ -99,15 +96,6 @@ class AacUi(fragmentManager: FragmentManager) : AnkoComponent<AacActivity> {
     }
 }
 
-class ViewClass(ctx: Context) : _ViewPager(ctx) {
-    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-        when (EventVar.fragmentTrans) {
-            false -> return false
-        }
-        return super.onInterceptTouchEvent(ev)
-    }
-}
-
 class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     private val fragments = linkedMapOf<String, Fragment>()
 
@@ -121,16 +109,6 @@ class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
         (fragments["幹部"] as SignUpFragment).setVm()
         (fragments["學員"] as SignUpFragment).setVm()
     }
-
-
-//    override fun getItemPosition(ob: Any): Int {
-//        "getItemPosition".pln()
-//        when (ob){
-//            fm.fragments[2] ->return PagerAdapter.POSITION_NONE
-////            fm.fragments[1] ->return PagerAdapter.POSITION_NONE
-//        }
-//        return POSITION_UNCHANGED
-//    }
 
     override fun getItem(position: Int): Fragment {
         val temp = fragments.values.elementAt(position)
@@ -148,4 +126,13 @@ class ViewpagerFm(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     override fun getCount(): Int {
         return fragments.size
     }
+
+//        override fun getItemPosition(ob: Any): Int {
+//        "getItemPosition".pln()
+//        when (ob){
+//            fm.fragments[2] ->return PagerAdapter.POSITION_NONE
+////            fm.fragments[1] ->return PagerAdapter.POSITION_NONE
+//        }
+//        return POSITION_UNCHANGED
+//    }
 }
