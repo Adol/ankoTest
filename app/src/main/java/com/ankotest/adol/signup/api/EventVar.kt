@@ -1,4 +1,4 @@
-package com.ankotest.adol.pickertest.api
+package com.ankotest.adol.signup.api
 
 /**
  * Created by adol on 2018/3/18.
@@ -13,5 +13,6 @@ class EventVar {
 
         var fragmentTrans = true
         var hasChange = true
+        var nowMonth = 0
     }
 }

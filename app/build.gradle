@@ -6,7 +6,7 @@ apply plugin: "org.jetbrains.kotlin.kapt"
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.ankotest.adol.pickertest"
+        applicationId "com.ankotest.adol.signup"
         minSdkVersion 21
         targetSdkVersion 27
 

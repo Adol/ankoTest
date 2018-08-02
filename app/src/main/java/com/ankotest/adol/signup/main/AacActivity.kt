@@ -1,4 +1,4 @@
-package com.ankotest.adol.pickertest.main
+package com.ankotest.adol.signup.main
 
 import android.os.Bundle
 import android.support.constraint.ConstraintSet.PARENT_ID
@@ -7,12 +7,13 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import com.ankotest.adol.pickertest.api.DeviceInfo
-import com.ankotest.adol.pickertest.api.TransFormSP.Companion.onTransform
-import com.ankotest.adol.pickertest.api.ViewClass
-import com.ankotest.adol.pickertest.api.viewClass
-import com.ankotest.adol.pickertest.model.SignUpRepository
-import com.ankotest.adol.pickertest.model.SignUpTable
+import com.ankotest.adol.signup.api.DeviceInfo
+import com.ankotest.adol.signup.api.EventVar.Companion.nowMonth
+import com.ankotest.adol.signup.api.TransFormSP.Companion.onTransform
+import com.ankotest.adol.signup.api.ViewClass
+import com.ankotest.adol.signup.api.viewClass
+import com.ankotest.adol.signup.model.SignUpRepository
+import com.ankotest.adol.signup.model.SignUpTable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Flowable
@@ -40,9 +41,10 @@ class AacActivity : AppCompatActivity() {
         DeviceInfo.getInfo(this)
         db = SignUpRepository(ctx)
         baseUi.setContentView(this)
+        nowMonth = 4
 //        dete()
         bg {
-            if (db.getAll(4).isEmpty()) {
+            if (db.getAll(nowMonth).isEmpty()) {
                 //read File
                 val inputStream = assets.open("json2.txt")
                 val inputString = inputStream.bufferedReader().use { it.readText() }

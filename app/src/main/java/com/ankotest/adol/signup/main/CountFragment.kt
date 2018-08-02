@@ -1,4 +1,4 @@
-package com.ankotest.adol.pickertest.main
+package com.ankotest.adol.signup.main
 
 import android.os.Bundle
 import android.support.constraint.ConstraintSet.PARENT_ID
@@ -9,8 +9,8 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.ankotest.adol.pickertest.api.getViewModel
-import com.ankotest.adol.pickertest.api.pln
+import com.ankotest.adol.signup.api.getViewModel
+import com.ankotest.adol.signup.api.pln
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout.applyConstraintSet
 import org.jetbrains.anko.constraint.layout.constraintLayout

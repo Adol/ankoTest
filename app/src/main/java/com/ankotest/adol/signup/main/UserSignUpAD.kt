@@ -1,4 +1,4 @@
-package com.ankotest.adol.pickertest.main
+package com.ankotest.adol.signup.main
 
 import android.content.Context
 import android.support.constraint.ConstraintSet.PARENT_ID
@@ -6,11 +6,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.ankotest.adol.pickertest.R
-import com.ankotest.adol.pickertest.api.DeviceInfo
-import com.ankotest.adol.pickertest.api.setT
-import com.ankotest.adol.pickertest.model.SignUpTable
-import com.ankotest.adol.pickertest.model.courseSignUP
+import com.ankotest.adol.signup.R
+import com.ankotest.adol.signup.api.DeviceInfo
+import com.ankotest.adol.signup.api.setT
+import com.ankotest.adol.signup.model.SignUpTable
+import com.ankotest.adol.signup.model.courseSignUP
 import org.jetbrains.anko.constraint.layout.ConstraintSetBuilder.Side.*
 import org.jetbrains.anko.constraint.layout._ConstraintLayout
 import org.jetbrains.anko.constraint.layout.applyConstraintSet

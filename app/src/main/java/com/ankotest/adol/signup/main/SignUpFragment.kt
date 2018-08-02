@@ -1,4 +1,4 @@
-package com.ankotest.adol.pickertest.main
+package com.ankotest.adol.signup.main
 
 import android.graphics.Color
 import android.os.Bundle
@@ -8,11 +8,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.view.animation.DecelerateInterpolator
-import com.ankotest.adol.pickertest.api.Easing
-import com.ankotest.adol.pickertest.api.EventVar
-import com.ankotest.adol.pickertest.api.getViewModel
-import com.ankotest.adol.pickertest.api.pln
-import com.ankotest.adol.pickertest.model.SignUpTable
+import com.ankotest.adol.signup.api.Easing
+import com.ankotest.adol.signup.api.EventVar
+import com.ankotest.adol.signup.api.getViewModel
+import com.ankotest.adol.signup.api.pln
+import com.ankotest.adol.signup.model.SignUpTable
 import com.github.florent37.kotlin.pleaseanimate.please
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.delay
@@ -42,7 +42,7 @@ class SignUpFragment : Fragment() {
         //VM取得db資料
         setItem()
         vm = getViewModel(this)
-        vm.getData(this, identity  = title, Fun = {
+        vm.getData(this, identity  = title, setMonth = EventVar.nowMonth, Fun = {
             val selectItmeadapter = SelectSignUPAd()
             showUser.adapter = selectItmeadapter
             selectItmeadapter.setIt(it)

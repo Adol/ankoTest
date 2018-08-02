@@ -1,4 +1,4 @@
-package com.ankotest.adol.pickertest.api
+package com.ankotest.adol.signup.api
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders

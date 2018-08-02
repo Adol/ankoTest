@@ -1,4 +1,4 @@
-package com.ankotest.adol.pickertest
+package com.ankotest.adol.signup
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

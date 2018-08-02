@@ -1,4 +1,4 @@
-package com.ankotest.adol.pickertest.model
+package com.ankotest.adol.signup.model
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.persistence.room.*
@@ -39,8 +39,8 @@ interface SignUpDao {
     @Query("select * from SignUpTable where identity = :identity AND month = :mt")
     fun getSignUp(identity: String,mt: Int): List<SignUpTable>
 
-    @Query("select * from SignUpTable where month = :mt")
-    fun getAll(mt: Int): List<SignUpTable>
+    @Query("select * from SignUpTable where month = :setMonth")
+    fun getAll(setMonth: Int): List<SignUpTable>
 
 //    @Query("select * from SignUpTable ")
 //    fun getTotal(mt: Int): List<SignUpTable>
@@ -71,8 +71,8 @@ class SignUpRepository(ctx: Context) {
         return data
     }
 
-    fun getAll(mt: Int ): List<SignUpTable> {
-        return mWordDao.getAll(mt)
+    fun getAll(setMonth: Int ): List<SignUpTable> {
+        return mWordDao.getAll(setMonth)
 //        Gson().toJson(mWordDao.getAll()).pln()
     }
 

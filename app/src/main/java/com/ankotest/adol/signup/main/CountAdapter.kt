@@ -1,4 +1,4 @@
-package com.ankotest.adol.pickertest.main
+package com.ankotest.adol.signup.main
 
 import android.content.Context
 import android.support.constraint.ConstraintSet.PARENT_ID

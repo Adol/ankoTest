@@ -1,4 +1,4 @@
-package com.ankotest.adol.pickertest.api
+package com.ankotest.adol.signup.api
 
 import android.graphics.Path
 import android.support.v4.view.animation.PathInterpolatorCompat

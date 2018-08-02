@@ -1,4 +1,4 @@
-package com.ankotest.adol.pickertest.model
+package com.ankotest.adol.signup.model
 
 fun getUser(name: String, Identity: String, sex: String): SignUpTable {
 

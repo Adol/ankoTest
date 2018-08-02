@@ -1,11 +1,11 @@
-package com.ankotest.adol.pickertest.main
+package com.ankotest.adol.signup.main
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.support.v4.app.Fragment
-import com.ankotest.adol.pickertest.model.SignUpRepository
-import com.ankotest.adol.pickertest.model.SignUpTable
+import com.ankotest.adol.signup.model.SignUpRepository
+import com.ankotest.adol.signup.model.SignUpTable
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -18,13 +18,13 @@ class SignVM : ViewModel() {
 
     private lateinit var dataUserSignUp: MutableLiveData<List<SignUpTable>>
 
-    fun getData(owner: Fragment, identity: String, Fun: (List<SignUpTable>) -> Unit) {
+    fun getData(owner: Fragment, identity: String, setMonth: Int, Fun: (List<SignUpTable>) -> Unit) {
         this.owner = owner
         bg {
-            Flowable.just(db.getSignUp(identity = identity,mt=6))
+            Flowable.just(db.getSignUp(identity = identity, mt = setMonth))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe{
+                    .subscribe {
                         dataUserSignUp = it
                         dataUserSignUp.observe(owner, Observer {
                             it!!.also(Fun)

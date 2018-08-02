@@ -1,4 +1,4 @@
-package com.ankotest.adol.pickertest
+package com.ankotest.adol.signup
 
 import org.junit.Test
 
